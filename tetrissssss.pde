@@ -23,6 +23,11 @@ int howButtonY = 520;
 
 PFont fuente;
 
+//Booleanos botones
+
+boolean playButton = false;
+boolean howButton = false;
+
 
 
 
@@ -38,6 +43,14 @@ void setup(){
 void draw(){
   
   tetrisInicialScreen();
+  
+  if(playButton){
+    background(255,0,0);
+  }
+  
+  if(howButton){
+    background(0,0,255);
+  }
 
 }
 
@@ -135,4 +148,25 @@ void tetrisInicialScreen(){
   text("¿COMO JUGAR?", buttonX + buttonW/2, howButtonY+buttonH/2);
   pop();
   
+}
+
+void mousePressed(){
+  if((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+  (mouseY > playButtonY) && (mouseY < playButtonY + buttonH)){
+    //Cambiamos el estado del boton
+    if(playButton){
+      playButton = false;
+    }else{
+      playButton = true;
+    }
+  }
+  if((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+  (mouseY > howButtonY) && (mouseY < howButtonY + buttonH)){
+    //Cambiamos el estado del boton
+    if(howButton){
+      howButton = false;
+    }else{
+      howButton = true;
+    }
+  }
 }
