@@ -134,6 +134,7 @@ int inicioButtonY = 660;  //Coordenada en y del boton inicio de la pantalla de p
 
 
 
+
 void setup() {
   //Pantalla de 980x480 pixeles, se tendran 250 pixeles libres a lado y lado del tetris
   size(980, 840);
@@ -174,7 +175,7 @@ void draw() {
       timer = millis();
       filasCompletas();
     }
-    
+
     pauseBotton();
   }
 
@@ -182,12 +183,15 @@ void draw() {
   if (screenHowToPlay) {
     howToPlay();
   }
-  
+
   //Cuando se deba mostrar la pantalla de pausa
-  if(screenPause){
+  if (screenPause) {
     background(backColor);
     pause();
-    
+  }
+  
+  if(gameOver()){
+    gameOverSreen();
   }
 }
 
@@ -273,8 +277,8 @@ void tetrisInicialScreen() {
 
   push();
   fill(bColor);
-  rect(buttonX, playButtonY, buttonW, buttonH ,redondeo);
-  rect(buttonX, howButtonY, buttonW, buttonH ,redondeo);
+  rect(buttonX, playButtonY, buttonW, buttonH, redondeo);
+  rect(buttonX, howButtonY, buttonW, buttonH, redondeo);
   pop();
 
   push();
@@ -295,8 +299,7 @@ void mousePressed() {
       //Cambiamos el estado de las pantallas
       screenInicial = false;
       screenGame = true;
-    }
-    else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+    } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > howButtonY) && (mouseY < howButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenInicial = false;
@@ -310,45 +313,40 @@ void mousePressed() {
       //Cambiamos el estado de las pantallas
       screenGame = true;
       screenHowToPlay= false;
-    }
-
-    else if ((mouseX > backButtonX) && (mouseX < backButtonX + buttonW2) && 
+    } else if ((mouseX > backButtonX) && (mouseX < backButtonX + buttonW2) && 
       (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
       //Cambiamos el estado de la pantalla
       screenInicial = true;
       screenHowToPlay= false;
     }
   }
-  
-  if(screenGame){
+
+  if (screenGame) {
     float d = dist(mouseX, mouseY, pauseBottonX, pauseBottonY);
-    if(d<radioPauseButton){
+    if (d<radioPauseButton) {
       screenGame = false;
       screenPause= true;
     }
   }
-  
-  if(screenPause){
+
+  if (screenPause) {
     if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > continueButtonY) && (mouseY < continueButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenPause = false;
       screenGame = true;
-    }
-    else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+    } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > restartButtonY) && (mouseY < restartButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenPause = false;
       screenGame= true;
       restart();
-    }
-    else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+    } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > howButtonY2) && (mouseY < howButtonY2 + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenPause = false;
       screenHowToPlay= true;
-    }
-    else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+    } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > inicioButtonY) && (mouseY < inicioButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenPause = false;
@@ -368,9 +366,9 @@ void keyPressed() {
       if (!colisionDerecha()) desplazamientoX++;
     } else if (keyCode == 83 || keyCode == 40) {
       if (!colisionAbajo()) desplazamientoY++;
-    }else if (key == 'p' || key == 'P') {
-        screenPause = true;
-        screenGame = false;        
+    } else if (key == 'p' || key == 'P') {
+      screenPause = true;
+      screenGame = false;
     } else if (key == 'W' || key == 'w' || key == 'O' || key == 'o') {
       pRotation = tRotation;
       tRotation = (tRotation + 1)%4;
@@ -390,8 +388,8 @@ void keyPressed() {
       }
     }
   }
-  
-  
+
+
   if (screenHowToPlay) {
     if (key == CODED) {
       if (keyCode == ENTER) {//PREGUNTARLE A SEBASSSSSSSSSS
@@ -401,14 +399,13 @@ void keyPressed() {
       }
     }
   }
-  
+
   /*if(screenPause){
-    if (key == 'p' || key == 'P') {
-        screenPause = false;
-        screenGame = true; 
-    }
-  }*/
-  
+   if (key == 'p' || key == 'P') {
+   screenPause = false;
+   screenGame = true; 
+   }
+   }*/
 }
 
 
@@ -539,7 +536,7 @@ boolean colisionIzquierda() {
         posMX = (i%4) + desplazamientoX;
         posMY = ((i/4)|0) + desplazamientoY;
         if (tablero.get(posMY)[posMX-1] != 0)
-        return true;
+          return true;
       }
     }
   }
@@ -555,7 +552,7 @@ boolean colisionDerecha() {
         posMX = ((15-i)%4) + desplazamientoX;
         posMY = (((15-i)/4)|0) + desplazamientoY;
         if (tablero.get(posMY)[posMX+1] != 0)
-        return true;
+          return true;
       }
     }
   }
@@ -569,7 +566,9 @@ boolean colisionAbajo() {
       posMX = ((15-i)%4) + desplazamientoX;
       posMY = (((15-i)/4)|0) + desplazamientoY;
       if (tablero.get(posMY+1)[posMX] != 0) {
-        siguienteFigura();
+        if (!gameOver()) {
+          siguienteFigura();
+        }
         return true;
       }
     }
@@ -627,27 +626,27 @@ void filasCompletas() {
   }
 }
 
-void pauseBotton(){
+void pauseBotton() {
   push();
   ellipseMode(RADIUS);
   fill(bColor);
-  ellipse(pauseBottonX, pauseBottonY,radioPauseButton,radioPauseButton);
+  ellipse(pauseBottonX, pauseBottonY, radioPauseButton, radioPauseButton);
   fill(backColor);
   rect(pauseBottonX-30, pauseBottonY-30, 20, 60);
   rect(pauseBottonX+10, pauseBottonY-30, 20, 60);
   pop();
 }
 
-void pause(){
+void pause() {
   push();
   fill(bColor);
   rect(buttonX, continueButtonY, buttonW, buttonH, redondeo);
   rect(buttonX, restartButtonY, buttonW, buttonH, redondeo);
-    rect(buttonX, howButtonY2, buttonW, buttonH, redondeo);
+  rect(buttonX, howButtonY2, buttonW, buttonH, redondeo);
   rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
   pop();
-  
-  
+
+
 
   push();
   textFont(fuente);
@@ -659,27 +658,58 @@ void pause(){
   text("¿COMOJUGAR?", buttonX + buttonW/2, howButtonY2+buttonH/2);
   text("INICIO", buttonX + buttonW/2, inicioButtonY+buttonH/2);
   pop();
-  
 }
 
 
 
-void restart(){
+void restart() {
   //Asignamos el valor de 1 para las bordes del tablero
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < columns; j++) {
-      if (j == 0 || j == columns - 1 || i == rows - 1){
+      if (j == 0 || j == columns - 1 || i == rows - 1) {
         tablero.get(i)[j] = 1;
-      }else{
-      tablero.get(i)[j] = 0;
-    }
+      } else {
+        tablero.get(i)[j] = 0;
+      }
     }
   }
-  
+
   numFiguraS = numFiguraA;
   numFiguraA = (int) random (7);
   tRotation = 0;
   desplazamientoX = 4;
   desplazamientoY = 0;
+}
+
+boolean gameOver() {
+  for (int j = 1; j < columns - 2; j++) {
+    if (tablero.get(0)[j] == 1) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+void gameOverSreen(){
+  
+  background(backColor);
+  
+  push();
+  fill(bColor);
+  rect(buttonX, howButtonY2, buttonW, buttonH, redondeo); //Boton de restart, reutilizamos la variable de altura de How2
+  rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
+  pop();
+
+
+
+  push();
+  textFont(fuente);
+  textSize(80);
+  textAlign(CENTER, CENTER);
+  fill(backColor);
+  text("RESTART", buttonX + buttonW/2, howButtonY2+buttonH/2);
+  text("INICIO", buttonX + buttonW/2, inicioButtonY+buttonH/2);
+  pop();
   
 }
