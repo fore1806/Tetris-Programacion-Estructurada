@@ -10,12 +10,12 @@ boolean screenPause = false;
 int yText = 100; //altura desde arriba para el mensaje tetris
 int anchoText = 120; //ancho de cada letra de la palabra tetris
 int alturaText = anchoText/2-10; //altura de cada subparte de Tetros
-int redondeo = 7; //redondeo de cada letra
+int redondeo = 7; //redondeo de botones
 int backColor = 20; //Color de fondo del juego en RGB
 
 // Botones
 
-int buttonW = 570;  //Ancho botones de pantalla de inicio
+int buttonW = 730;  //Ancho botones de pantalla de inicio
 int buttonH = 120;  //Alto de botones de pantalla de inicio
 int buttonX = 125;  //Coordenada en x de botones de pantalla de inicio
 
@@ -38,7 +38,7 @@ PFont fuente;  //Creamos una variable para almacenar una fuenta que introducimos
 int buttonW2 = 250; //Ancho de los botones de la pantalla de como jugar
 int buttonY2 = 620;  //Coordenada en y de los botones de la pantalla de como jugar
 
-int playButton2X = 510;  //Coordenada en x del boton de jugar en la pantalla de como jugar
+int playButton2X = 670;  //Coordenada en x del boton de jugar en la pantalla de como jugar
 
 int backButtonX = 60;  //Coordenad en x del boton volver en la pantalla de como jugar
 
@@ -108,7 +108,7 @@ int intervalo = 1000;  //Nos dice la velocidad con la que baja la pieza, la util
 
 //Boton de pausa
 
-int pauseBottonX = 735;
+int pauseBottonX = 855;
 int pauseBottonY = 100;
 int radioPauseButton = 50;
 
@@ -135,8 +135,8 @@ int inicioButtonY = 660;  //Coordenada en y del boton inicio de la pantalla de p
 
 
 void setup() {
-  //Pantalla de 820x480 pixeles, se tendran 200 pixeles libres a lado y lado del tetris
-  size(820, 840);
+  //Pantalla de 980x480 pixeles, se tendran 250 pixeles libres a lado y lado del tetris
+  size(980, 840);
 
   //Fuente para los textos
   fuente = loadFont("Cambria-Bold-80.vlw");
@@ -273,8 +273,8 @@ void tetrisInicialScreen() {
 
   push();
   fill(bColor);
-  rect(buttonX, playButtonY, buttonW, buttonH);
-  rect(buttonX, howButtonY, buttonW, buttonH);
+  rect(buttonX, playButtonY, buttonW, buttonH ,redondeo);
+  rect(buttonX, howButtonY, buttonW, buttonH ,redondeo);
   pop();
 
   push();
@@ -347,13 +347,13 @@ void mousePressed() {
       //Cambiamos el estado de las pantallas
       screenPause = false;
       screenHowToPlay= true;
-      restart();
     }
     else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > inicioButtonY) && (mouseY < inicioButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenPause = false;
       screenInicial = true;
+      restart();
     }
   }
 }
@@ -437,8 +437,8 @@ void howToPlay() {
 
   push();
   fill(bColor);
-  rect(playButton2X, buttonY2, buttonW2, buttonH);
-  rect(backButtonX, buttonY2, buttonW2, buttonH);
+  rect(playButton2X, buttonY2, buttonW2, buttonH, redondeo);
+  rect(backButtonX, buttonY2, buttonW2, buttonH, redondeo);
   pop();
 
   push();
@@ -488,7 +488,8 @@ void drawTetromino(int numero/*, int desplazamientoX, int desplazamientoY, int p
   fill(colorTetromino);
   for (int i = 0; i <= 15; i++) {
     if ((array[tRotation] & (1 << 15 - i)) != 0) {
-      posX = (i%4)*dimCuadro + desplazamientoX*dimCuadro + 170 /*posicionX*/;
+      posX = (i%4)*dimCuadro + desplazamientoX*dimCuadro + 250;
+      println(posX);
       posY = ((i/4)|0) * dimCuadro + desplazamientoY*dimCuadro;
       square(posX, posY, dimCuadro);
     }
@@ -501,26 +502,26 @@ void drawTablero() {
   for (int i=0; i < rows; i++) {
     push();
     stroke(125);
-    line(170, i*dimCuadro, width - 170, i*dimCuadro);
+    line(250, i*dimCuadro, width - 250, i*dimCuadro);
     pop();
     for (int j=0; j < columns; j++) {
       push();
       stroke(125);
-      line(j*dimCuadro+170, 0, j*dimCuadro+170, height);
+      line(j*dimCuadro+250, 0, j*dimCuadro+250, height);
       pop();
       if (j == 0 || j == columns - 1 || i == rows - 1) {
         push();
         stroke(0);
         strokeWeight(2);
         fill(bColor);
-        square(j*dimCuadro+170, i*dimCuadro, dimCuadro);
+        square(j*dimCuadro+250, i*dimCuadro, dimCuadro);
         pop();
       } else if (tablero.get(i)[j] == 1) {
         push();
         stroke(0);
         strokeWeight(2);
         fill(TColor);
-        square(j*dimCuadro+170, i*dimCuadro, dimCuadro);
+        square(j*dimCuadro+250, i*dimCuadro, dimCuadro);
         pop();
       }
     }
@@ -640,10 +641,10 @@ void pauseBotton(){
 void pause(){
   push();
   fill(bColor);
-  rect(buttonX, continueButtonY, buttonW, buttonH);
-  rect(buttonX, restartButtonY, buttonW, buttonH);
-    rect(buttonX, howButtonY2, buttonW, buttonH);
-  rect(buttonX, inicioButtonY, buttonW, buttonH);
+  rect(buttonX, continueButtonY, buttonW, buttonH, redondeo);
+  rect(buttonX, restartButtonY, buttonW, buttonH, redondeo);
+    rect(buttonX, howButtonY2, buttonW, buttonH, redondeo);
+  rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
   pop();
   
   
