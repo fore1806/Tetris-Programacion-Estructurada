@@ -4,6 +4,7 @@ boolean screenInicial = true;
 boolean screenHowToPlay= false;
 boolean screenGame = false;
 boolean screenPause = false;
+boolean screenGameOver = false;
 
 //Pantalla de inicio 
 
@@ -50,7 +51,7 @@ int rows = 21;  //Filas de la matriz del tablero
 int columns = 12;  //Columnas de la matriz del tablero
 
 //Utilizamos un ArrayList para facilitar la eliminacion y la adicionde filas
-ArrayList<int[]> tablero = new ArrayList<int[]>();
+ArrayList<color[]> tablero = new ArrayList<color[]>();
 
 //Definimos el ancho de cada cuadrado
 int dimCuadro = 40;
@@ -68,8 +69,8 @@ int [] T = {58368, 19520, 19968, 35968};  //Figura T
 
 int [] array;  //Esta variable determinara que tetromino representar mas adelante
 color colorTetromino;  //Esta variable nos determinara el color del tetromino a dibujar
-int numFiguraA = (int)random (7);  //Esta varianle nos dira cual tetromino pintar despues
-int numFiguraS = (int)random (7);  //Esta varianle nos dira cual tetromino pintar antes
+int numFigura = (int)random (7);  //Esta varianle nos dira cual tetromino pintar despues
+int numFiguraSig = (int)random (7);  //Esta varianle nos dira cual tetromino pintar antes
 
 // Definimos la rotacion inicial en el inicio del array
 int tRotation = 0;
@@ -131,6 +132,9 @@ int howButtonY2 = 460;  //Coordenada en y del boton como jugar de la pantalla de
 int inicioButtonY = 660;  //Coordenada en y del boton inicio de la pantalla de pausa
 
 
+int restartButtonY2 = 460;
+
+
 
 
 
@@ -143,17 +147,12 @@ void setup() {
   fuente = loadFont("Cambria-Bold-80.vlw");
 
   // Creamos ArrayList de arreglos de ceros como elementos
+  tablero = new ArrayList<color[]>();
+  // ArrayList de arrays con ceros en sus elementos.
   for (int k = 0; k < rows; k++) {
-    tablero.add(new int[columns]);
+    tablero.add(new color[columns]);
   }
-
-  //Asignamos el valor de 1 para las bordes del tablero
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < columns; j++) {
-      if (j == 0 || j == columns - 1 || i == rows - 1)
-        tablero.get(i)[j] = 1;
-    }
-  }
+  setupTablero();
 }
 
 
@@ -165,34 +164,39 @@ void draw() {
   }
 
   //Cuando se debe mostrar la pantalla de juego
-  if (screenGame) {
+  else if (screenGame) {
     background(backColor);
     drawTablero();
-    drawTetromino(numFiguraS/*, desplazamientoX, desplazamientoY, tableroX*/);
+    rectPiezaSig();
+    drawTetromino(numFiguraSig, 0);
+    drawTetromino(numFigura, 1);
     //drawTetromino(numFiguraA, 0, 0, figuraProx);
     if (millis() - timer >= intervalo) {
       darPaso();
       timer = millis();
       filasCompletas();
     }
+    
+    gameOver();
 
     pauseBotton();
   }
 
   //Cuando se debe mostrar la pantalla de como jugar
-  if (screenHowToPlay) {
+  else if (screenHowToPlay) {
     howToPlay();
   }
 
   //Cuando se deba mostrar la pantalla de pausa
-  if (screenPause) {
+  else if (screenPause) {
     background(backColor);
     pause();
   }
-  
-  if(gameOver()){
+
+  else if (screenGameOver) {
     gameOverSreen();
   }
+  
 }
 
 
@@ -200,79 +204,9 @@ void draw() {
 void tetrisInicialScreen() {
 
 
-  int pasox = 130;
-  int pasoy = 70;
+  //int pasox = 130;
+  //int pasoy = 70;
   background(backColor);
-
-
-  //T
-  push();
-  noStroke();
-  fill(#B40D0D);
-  rect(10, yText, anchoText, alturaText, redondeo);//Palo horizontal
-  rect(45, yText+alturaText, alturaText, anchoText+20, 0, 0, redondeo, redondeo);//Palo vertical
-  pop();
-
-  //E
-  push();
-  noStroke();
-  fill(#172582);
-  rect(10+pasox, yText, alturaText, anchoText + 60, redondeo);//Palo vertical
-  rect(10+pasox, yText, anchoText, alturaText, redondeo);//Primer palo horizontal
-  rect(10+pasox, yText+pasoy, anchoText, alturaText, redondeo);//Segundo palo horizontal
-  rect(10+pasox, yText+(2*pasoy), anchoText, alturaText, redondeo);//Tercer palo horizontal
-  pop();
-
-  //T
-  push();
-  noStroke();
-  fill(#F2A023);
-  rect(10+(pasox*2), yText, anchoText, alturaText, redondeo);//Palo horizontal
-  rect(45+(pasox*2), yText+alturaText, alturaText, anchoText+20, 0, 0, redondeo, redondeo);//Palo vertical
-  pop();
-
-  //R
-  push();
-  noStroke();
-  fill(#089846);
-  circle(10+(pasox*3)+60, yText+60, 120);//Parte redondeada
-  rect(10+(pasox*3), yText+120, anchoText, 80, 0, redondeo, redondeo, redondeo);//Rectangulo inferior
-  rect(10+(pasox*3), yText, alturaText+10, 120, redondeo, redondeo, redondeo, 0);//Parte superior del palo Complemento
-  pop();
-
-  push();
-  noStroke();
-  fill(backColor);
-  circle(10+(pasox*3)+75, yText+60, 50);
-  rect(10+(pasox*3)+alturaText-10, yText+35, 35, 50, redondeo);
-  triangle(10+(pasox*3)+alturaText+20, yText+120, 10+(pasox*3)+anchoText, yText+200, 10+(pasox*3)+anchoText, yText+120);
-  triangle(10+(pasox*3)+alturaText -10, yText+120, 10+(pasox*3)+alturaText -10, yText+200, 10+(pasox*3)+anchoText-40, yText+200);
-  pop();
-
-  //i
-  push();
-  noStroke();
-  fill(#9024BE);
-  rect(10+(pasox*4), yText, anchoText, alturaText, redondeo);//Palo horizontal
-  rect(45+(pasox*4), yText+alturaText, alturaText, anchoText+20, 0, 0, redondeo, redondeo);//Palo vertical
-  rect(10+(pasox*4), yText + 200 - alturaText, anchoText, alturaText, redondeo);//Palo horizontal
-  pop();
-
-  //S
-  push();
-  noStroke();
-  fill(#0BBBAA);
-  //rect(10+(pasox*5),yText,anchoText,alturaText,redondeo,redondeo,redondeo,redondeo);//Palo horizontal
-  rect(10+(pasox*5), yText, anchoText, anchoText+80, redondeo);//rectangulo
-  //rect(10+(pasox*5),yText + 200 - alturaText,anchoText,alturaText,redondeo, redondeo,redondeo,redondeo);//Palo horizontal
-  pop();
-
-  push();
-  noStroke();
-  fill(backColor);
-  triangle(10+(pasox*5), yText+alturaText, 10+(pasox*5), yText+200-alturaText, 10+(pasox*5) + 70, yText+200-alturaText );
-  triangle(pasox*6, yText+alturaText, pasox*6, yText+200-alturaText, 10+(pasox*5) + 50, yText+alturaText );  
-  pop();
 
 
   push();
@@ -305,9 +239,7 @@ void mousePressed() {
       screenInicial = false;
       screenHowToPlay= true;
     }
-  }
-
-  if (screenHowToPlay) {
+  } else if (screenHowToPlay) {
     if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
       (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
       //Cambiamos el estado de las pantallas
@@ -319,17 +251,13 @@ void mousePressed() {
       screenInicial = true;
       screenHowToPlay= false;
     }
-  }
-
-  if (screenGame) {
+  } else if (screenGame) {
     float d = dist(mouseX, mouseY, pauseBottonX, pauseBottonY);
     if (d<radioPauseButton) {
       screenGame = false;
       screenPause= true;
     }
-  }
-
-  if (screenPause) {
+  } else if (screenPause) {
     if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > continueButtonY) && (mouseY < continueButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
@@ -351,6 +279,20 @@ void mousePressed() {
       //Cambiamos el estado de las pantallas
       screenPause = false;
       screenInicial = true;
+      restart();
+    }
+  } else if (screenGameOver) {
+    if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+      (mouseY > restartButtonY2) && (mouseY < restartButtonY2 + buttonH)) {
+      //Cambiamos el estado de las pantallas
+      screenGame = true;
+      screenGameOver = false;
+      restart();
+    } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+      (mouseY > inicioButtonY) && (mouseY < inicioButtonY + buttonH)) {
+      //Cambiamos el estado de las pantallas
+      screenInicial = true;
+      screenGameOver = false;
       restart();
     }
   }
@@ -377,35 +319,28 @@ void keyPressed() {
         tRotation = pRotation;
       };
     }
-  }
-
-  if (screenInicial) {
+  } else if (screenInicial) {
     if (key == CODED) {
-      if (keyCode == ENTER) {//PREGUNTARLE A SEBASSSSSSSSSS
+      if (keyCode == ENTER) {//PREGUNTARLE AL PROFE
         //Cambiamos el estado de las pantallas
         screenInicial = false;
         screenGame = true;
       }
     }
-  }
-
-
-  if (screenHowToPlay) {
-    if (key == CODED) {
-      if (keyCode == ENTER) {//PREGUNTARLE A SEBASSSSSSSSSS
+  } else if (screenHowToPlay) {
+    //if (key == CODED) {
+      if (keyCode == 13) {//PREGUNTARLE AL PROFE
         //Cambiamos el estado de las pantallas
         screenHowToPlay = false;
         screenGame = true;
       }
+    //}
+  } else if (screenPause) {
+    if (key == 'p' || key == 'P') {
+      screenPause = false;
+      screenGame = true;
     }
   }
-
-  /*if(screenPause){
-   if (key == 'p' || key == 'P') {
-   screenPause = false;
-   screenGame = true; 
-   }
-   }*/
 }
 
 
@@ -448,7 +383,7 @@ void howToPlay() {
   pop();
 }
 
-void drawTetromino(int numero/*, int desplazamientoX, int desplazamientoY, int posicionX*/) {
+void drawTetromino(int numero, int siMovimiento) {
   switch (numero) {
   case 0:
     array = I;
@@ -480,18 +415,75 @@ void drawTetromino(int numero/*, int desplazamientoX, int desplazamientoY, int p
     break;
   }
 
-  push();
-  strokeWeight(2);
-  fill(colorTetromino);
-  for (int i = 0; i <= 15; i++) {
-    if ((array[tRotation] & (1 << 15 - i)) != 0) {
-      posX = (i%4)*dimCuadro + desplazamientoX*dimCuadro + 250;
-      println(posX);
-      posY = ((i/4)|0) * dimCuadro + desplazamientoY*dimCuadro;
-      square(posX, posY, dimCuadro);
+  if (siMovimiento ==1) {
+    push();
+    //translate(0, -40); //Arranca a dibujar los tetrominos un poco arriba
+    strokeWeight(2);
+    fill(colorTetromino);
+    for (int i = 0; i <= 15; i++) {
+      if ((array[tRotation] & (1 << 15 - i)) != 0) {
+        posX = (i%4)*dimCuadro + desplazamientoX*dimCuadro + 250;
+        posY = ((i/4)|0) * dimCuadro + desplazamientoY*dimCuadro;
+        square(posX, posY, dimCuadro);
+      }
     }
+    pop();
+  } else {
+    push();
+    strokeWeight(2);
+    fill(colorTetromino);
+    for (int i = 0; i <= 15; i++) {
+      if ((array[0] & (1 << 15 - i)) != 0) {
+        posX = (i%4)*dimCuadro + 45;
+        posY = ((i/4)|0) * dimCuadro + 4*dimCuadro;
+        square(posX, posY, dimCuadro);
+      }
+    }
+    pop();
+  }
+}
+
+void rectPiezaSig(){
+  
+  
+  
+  push();
+  fill(bColor);
+  stroke(backColor);
+  strokeWeight(5);
+  rect(5,3*dimCuadro,6*dimCuadro,4*dimCuadro);
+  pop();
+  
+  push();
+  fill(backColor);
+  stroke(backColor);
+  strokeWeight(5);
+  rect(45,4*dimCuadro,4*dimCuadro,2*dimCuadro);
+  pop();
+  
+  push();
+  fill(backColor);
+  strokeWeight(2);
+  for(int i = 5; i<=(6*dimCuadro+5); i += dimCuadro){
+    line(i,3*dimCuadro,i,7*dimCuadro);
+  }
+  for(int j=3*dimCuadro; j<=7*dimCuadro; j+=dimCuadro){
+    line(5,j,245,j);
   }
   pop();
+}
+
+void setupTablero() {
+  //imprimirArrayList();
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < columns; j++) {
+      if (j == 0 || j == columns - 1 || i == rows - 1) {
+        tablero.get(i)[j] = bColor;
+      } else {
+        tablero.get(i)[j] = 0;
+      }
+    }
+  }
 }
 
 
@@ -513,11 +505,11 @@ void drawTablero() {
         fill(bColor);
         square(j*dimCuadro+250, i*dimCuadro, dimCuadro);
         pop();
-      } else if (tablero.get(i)[j] == 1) {
+      } else if (tablero.get(i)[j] != 0) {
         push();
         stroke(0);
         strokeWeight(2);
-        fill(TColor);
+        fill(tablero.get(i)[j]);
         square(j*dimCuadro+250, i*dimCuadro, dimCuadro);
         pop();
       }
@@ -566,7 +558,7 @@ boolean colisionAbajo() {
       posMX = ((15-i)%4) + desplazamientoX;
       posMY = (((15-i)/4)|0) + desplazamientoY;
       if (tablero.get(posMY+1)[posMX] != 0) {
-        if (!gameOver()) {
+        if (!screenGameOver) {
           siguienteFigura();
         }
         return true;
@@ -582,7 +574,7 @@ boolean colisionRotacion() {
     if ((array[tRotation] & (1 << 15 - i)) != 0) {
       posMX = (i%4) + desplazamientoX;
       posMY = ((i/4)|0) + desplazamientoY;
-      if (tablero.get(posMY)[posMX] == 1) return true;
+      if (tablero.get(posMY)[posMX] != 0) return true;
     }
   }
   return false;
@@ -595,12 +587,12 @@ void siguienteFigura() {
     if ((array[tRotation] & (1 << 15 - i)) != 0) {
       posMX = (i%4) + desplazamientoX;
       posMY = ((i/4)|0) + desplazamientoY;
-      tablero.get(posMY)[posMX] = 1;
+      tablero.get(posMY)[posMX] = colorTetromino;
     }
   }
 
-  numFiguraS = numFiguraA;
-  numFiguraA = (int) random (7);
+  numFigura = numFiguraSig;
+  numFiguraSig = (int) random (7);
   tRotation = 0;
   desplazamientoX = 4;
   desplazamientoY = 0;
@@ -611,18 +603,17 @@ void darPaso() {
 }
 
 void filasCompletas() {
-  int suma = 0;
+
   for (int i = rows - 2; i >= 0; i--) {
-    for (int j = 1; j < 11; j++) {
-      suma += tablero.get(i)[j];
+    int j = 0;
+    for (j = 1; j < 11 && tablero.get(i)[j] != 0; j++) {
     }
-    if (suma == 10) {
+    if (j == 11) {
       tablero.remove(i);
-      tablero.add(0, new int[columns]);
-      tablero.get(0)[0] = 1;
-      tablero.get(0)[columns-1] = 1;
+      tablero.add(0, new color[columns]);
+      tablero.get(0)[0] = backColor;
+      tablero.get(0)[columns-1] = backColor;
     }
-    suma = 0;
   }
 }
 
@@ -630,7 +621,7 @@ void pauseBotton() {
   push();
   ellipseMode(RADIUS);
   fill(bColor);
-  ellipse(pauseBottonX, pauseBottonY, radioPauseButton, radioPauseButton);
+  circle(pauseBottonX, pauseBottonY, radioPauseButton);
   fill(backColor);
   rect(pauseBottonX-30, pauseBottonY-30, 20, 60);
   rect(pauseBottonX+10, pauseBottonY-30, 20, 60);
@@ -664,40 +655,34 @@ void pause() {
 
 void restart() {
   //Asignamos el valor de 1 para las bordes del tablero
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < columns; j++) {
-      if (j == 0 || j == columns - 1 || i == rows - 1) {
-        tablero.get(i)[j] = 1;
-      } else {
-        tablero.get(i)[j] = 0;
-      }
-    }
-  }
+  setupTablero();
 
-  numFiguraS = numFiguraA;
-  numFiguraA = (int) random (7);
+  numFigura = (int) random (7);
+  numFiguraSig = (int) random (7);
   tRotation = 0;
   desplazamientoX = 4;
   desplazamientoY = 0;
+  //screenGameOver = false;
 }
 
-boolean gameOver() {
+void gameOver() {
   for (int j = 1; j < columns - 2; j++) {
-    if (tablero.get(0)[j] == 1) {
-      return true;
+    if (tablero.get(0)[j] != 0) {
+      screenGame = false;
+      screenGameOver = true;
+      
     }
   }
-  return false;
 }
 
 
-void gameOverSreen(){
-  
+void gameOverSreen() {
+
   background(backColor);
-  
+
   push();
   fill(bColor);
-  rect(buttonX, howButtonY2, buttonW, buttonH, redondeo); //Boton de restart, reutilizamos la variable de altura de How2
+  rect(buttonX, restartButtonY2, buttonW, buttonH, redondeo); //Boton de restart, reutilizamos la variable de altura de How2
   rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
   pop();
 
@@ -711,5 +696,4 @@ void gameOverSreen(){
   text("RESTART", buttonX + buttonW/2, howButtonY2+buttonH/2);
   text("INICIO", buttonX + buttonW/2, inicioButtonY+buttonH/2);
   pop();
-  
 }
