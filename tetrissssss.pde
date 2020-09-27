@@ -49,6 +49,20 @@ final int playButton2X = 670;  //Coordenada en x del boton de jugar en la pantal
 
 final int backButtonX = 60;  //Coordenad en x del boton volver en la pantalla de como jugar
 
+//Pantalla de como jugar
+
+final int dimLevelBoton = 100;
+
+final int levelButtonX1 = 180;
+final int levelButtonX2 = 310;
+final int levelButtonX3 = 440;
+final int levelButtonX4 = 570;
+final int levelButtonX5 = 700;
+
+final int levelButtonY1 = 150;
+final int levelButtonY2 = 280;
+
+
 //Pantalla de juego
 
 //Representacion del tablero en forma de una matriz 21X12
@@ -68,7 +82,7 @@ final int [] L = {59392, 50240, 11776, 35008};  //Figura L
 final int [] S = {27648, 35904, 27648, 35904};  //Figura S
 final int [] Z = {50688, 19584, 50688, 19584};  //Figura Z
 final int [] J = {57856, 17600, 36352, 51328};  //Figura J
-final int [] O = {52224, 52224, 52224, 52224};  //Figura O
+final int [] O = {26112, 26112, 26112, 26112};  //Figura O
 final int [] T = {58368, 19520, 19968, 35968};  //Figura T
 
 //Valores importantes para la representacion
@@ -178,10 +192,10 @@ void draw() {
   else if (screenHowToPlay) {
     howToPlayScreen();
   }
-  
+
   //Cuando se debe mostrar la pantalla de configuracion
   else if (screenConfiguracion) {
-    background(255);
+    configuracionScreen();
   }
 
   //Cuando se deba mostrar la pantalla de pausa
@@ -193,7 +207,7 @@ void draw() {
   else if (screenGameOver) {
     gameOverSreen();
   }
-  
+
   println(puntaje, nivel, eliminatedRows, intervalo);
 }
 
@@ -213,8 +227,7 @@ void mousePressed() {
       //Cambiamos el estado de las pantallas
       screenInicial = false;
       screenHowToPlay= true;
-    }
-    else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+    } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > confButtonY) && (mouseY < confButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenInicial = false;
@@ -231,6 +244,68 @@ void mousePressed() {
       //Cambiamos el estado de la pantalla
       screenInicial = true;
       screenHowToPlay= false;
+    }
+  } else if (screenConfiguracion) {
+    if ((mouseX > levelButtonX1) && (mouseX < levelButtonX1 + dimLevelBoton) && 
+      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
+      nivel = 1;
+      intervalo = 1000;
+    }
+    else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
+      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
+      nivel = 2;
+      intervalo = 910;
+    }
+    else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
+      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
+      nivel = 3;
+      intervalo = 820;
+    }
+    else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
+      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
+      nivel = 4;
+      intervalo = 730;
+    }
+    else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
+      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
+      nivel = 5;
+      intervalo = 640;
+    }
+    else if ((mouseX > levelButtonX1) && (mouseX < levelButtonX1 + dimLevelBoton) && 
+      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
+      nivel = 6;
+      intervalo = 550;
+    }
+    else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
+      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
+      nivel = 7;
+      intervalo = 460;
+    }
+    else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
+      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
+      nivel = 8;
+      intervalo = 370;
+    }
+    else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
+      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
+      nivel = 9;
+      intervalo = 280;
+    }
+    else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
+      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
+      nivel = 10;
+      intervalo = 190;
+    }
+    else if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
+      (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
+      //Cambiamos el estado de las pantallas
+      screenGame = true;
+      screenConfiguracion= false;
+    } else if ((mouseX > backButtonX) && (mouseX < backButtonX + buttonW2) && 
+      (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
+      //Cambiamos el estado de la pantalla
+      screenInicial = true;
+      screenConfiguracion= false;
     }
   } else if (screenGame) {
     float d = dist(mouseX, mouseY, pauseBottonX, pauseBottonY);
@@ -342,8 +417,8 @@ void tetrisInicialScreen() {
   rect(buttonX, howButtonY, buttonW, buttonH, redondeo);
   rect(buttonX, confButtonY, buttonW, buttonH, redondeo);
   pop();
-  
-  
+
+
 
   push();
   textFont(fuente);
@@ -398,6 +473,56 @@ void howToPlayScreen() {
 }
 
 
+// Pantalla de configuracion
+
+void configuracionScreen() {
+  background(backColor);
+
+  push();
+  fill(bColor);
+  square(levelButtonX1, levelButtonY1, dimLevelBoton);
+  square(levelButtonX2, levelButtonY1, dimLevelBoton);
+  square(levelButtonX3, levelButtonY1, dimLevelBoton);
+  square(levelButtonX4, levelButtonY1, dimLevelBoton);
+  square(levelButtonX5, levelButtonY1, dimLevelBoton);
+
+  square(levelButtonX1, levelButtonY2, dimLevelBoton);
+  square(levelButtonX2, levelButtonY2, dimLevelBoton);
+  square(levelButtonX3, levelButtonY2, dimLevelBoton);
+  square(levelButtonX4, levelButtonY2, dimLevelBoton);
+  square(levelButtonX5, levelButtonY2, dimLevelBoton);
+  
+  rect(playButton2X, buttonY2, buttonW2, buttonH, redondeo);
+  rect(backButtonX, buttonY2, buttonW2, buttonH, redondeo);
+  
+  pop();
+
+  push();
+  textFont(fuente);
+  textAlign(CENTER, CENTER);
+  fill(240);
+  //Titulo
+  textSize(80);
+  text("Selecciona el nivel", width/2, 80);
+
+  //texto Botones
+  fill(backColor);
+  text("1", levelButtonX1 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
+  text("2", levelButtonX2 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
+  text("3", levelButtonX3 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
+  text("4", levelButtonX4 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
+  text("5", levelButtonX5 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
+  text("6", levelButtonX1 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
+  text("7", levelButtonX2 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
+  text("8", levelButtonX3 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
+  text("9", levelButtonX4 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
+  text("10", levelButtonX5 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
+  
+  text("JUGAR", playButton2X + buttonW2/2, buttonY2 + buttonH/2);
+  text("ATRAS", backButtonX + buttonW2/2, buttonY2 + buttonH/2);
+  
+  pop();
+}
 
 //Pantalla de Juego
 
@@ -741,8 +866,6 @@ void deleteCompleteRows() {
       eliminatedRows +=1;
     }
   }
-  
-  
 }
 
 
@@ -771,7 +894,6 @@ void restart() {
   tRotation = 0;
   desplazamientoX = 4;
   desplazamientoY = 0;
-
 }
 
 //Funcion para saber si el jugador perdio
@@ -787,19 +909,19 @@ void gameOver() {
 
 //Funcion nivel
 
-void nivelActual(){
-  if((puntaje!=0) && (eliminatedRows == 5) && (nivel < 10)){
+void nivelActual() {
+  if ((puntaje!=0) && (eliminatedRows == 5) && (nivel < 10)) {
     nivel += 1;
-    intervalo -= 60;
+    intervalo -= 70;
     eliminatedRows = 0;
   }
 }
 
 //Funcion para mostrar nivel y resultado
 
-void levelScore(){
-  
-  
+void levelScore() {
+
+
   push();
   fill(bColor);
   stroke(backColor);
@@ -813,8 +935,8 @@ void levelScore(){
   strokeWeight(5);
   rect(775, 6*dimCuadro, 4*dimCuadro, 6*dimCuadro);
   pop();
-  
-  
+
+
   push();
   textFont(fuente);
   textSize(40);
@@ -825,15 +947,15 @@ void levelScore(){
   text("SCORE", 775 + 2*dimCuadro, 9*dimCuadro + 30);
   text(puntaje, 775 + 2*dimCuadro, 9*dimCuadro + 80);
   pop();
-  
+
   push();
   fill(backColor);
   strokeWeight(2);
-  for (int i = 735; i<=735+6*dimCuadro; i += 40){
+  for (int i = 735; i<=735+6*dimCuadro; i += 40) {
     line(i, 5*dimCuadro, i, 6*dimCuadro);
     line(i, 12*dimCuadro, i, 13*dimCuadro);
   }
-  for(int j = 5*dimCuadro; j <= 13*dimCuadro; j+=dimCuadro){
+  for (int j = 5*dimCuadro; j <= 13*dimCuadro; j+=dimCuadro) {
     line(735, j, 735 + dimCuadro, j);
     line(735 + 5*dimCuadro, j, 735 + 6*dimCuadro, j);
   }
