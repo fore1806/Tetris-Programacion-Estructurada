@@ -69,8 +69,8 @@ int [] T = {58368, 19520, 19968, 35968};  //Figura T
 
 int [] array;  //Esta variable determinara que tetromino representar mas adelante
 color colorTetromino;  //Esta variable nos determinara el color del tetromino a dibujar
-int numFigura = (int)random (7);  //Esta varianle nos dira cual tetromino pintar despues
-int numFiguraSig = (int)random (7);  //Esta varianle nos dira cual tetromino pintar antes
+int numFigura = (int)random (7);  //Esta variable nos dira cual tetromino pintar despues
+int numFiguraSig = (int)random (7);  //Esta variable nos dira cual tetromino pintar antes
 
 // Definimos la rotacion inicial en el inicio del array
 int tRotation = 0;
@@ -85,8 +85,8 @@ float posX;
 float posY;
 
 //Variables de posicion de cuadros para las rotaciones
-int posMX;
-int posMY;
+int posColisionX;
+int posColisionY;
 
 //Colores en codigos hexadecimales
 
@@ -136,9 +136,6 @@ int restartButtonY2 = 460;
 
 
 
-
-
-
 void setup() {
   //Pantalla de 980x480 pixeles, se tendran 250 pixeles libres a lado y lado del tetris
   size(980, 840);
@@ -164,66 +161,28 @@ void draw() {
   }
 
   //Cuando se debe mostrar la pantalla de juego
-  else if (screenGame) {
-    background(backColor);
-    drawTablero();
-    rectPiezaSig();
-    drawTetromino(numFiguraSig, 0);
-    drawTetromino(numFigura, 1);
-    //drawTetromino(numFiguraA, 0, 0, figuraProx);
-    if (millis() - timer >= intervalo) {
-      darPaso();
-      timer = millis();
-      filasCompletas();
-    }
-    
-    gameOver();
-
-    pauseBotton();
+  else if (screenGame) {    
+    gameScreen();
   }
 
   //Cuando se debe mostrar la pantalla de como jugar
   else if (screenHowToPlay) {
-    howToPlay();
+    howToPlayScreen();
   }
 
   //Cuando se deba mostrar la pantalla de pausa
   else if (screenPause) {
-    background(backColor);
-    pause();
-  }
+    pauseScreen();
+  } 
 
+  //Cuando se deba mostrar la pantalla de game over
   else if (screenGameOver) {
     gameOverSreen();
   }
-  
 }
 
 
-// Pantalla de inicio
-void tetrisInicialScreen() {
-
-
-  //int pasox = 130;
-  //int pasoy = 70;
-  background(backColor);
-
-
-  push();
-  fill(bColor);
-  rect(buttonX, playButtonY, buttonW, buttonH, redondeo);
-  rect(buttonX, howButtonY, buttonW, buttonH, redondeo);
-  pop();
-
-  push();
-  textFont(fuente);
-  textSize(80);
-  textAlign(CENTER, CENTER);
-  fill(backColor);
-  text("JUGAR", buttonX + buttonW/2, playButtonY+buttonH/2);
-  text("¿COMO JUGAR?", buttonX + buttonW/2, howButtonY+buttonH/2);
-  pop();
-}
+//Funciones de interaccion con el usuario
 
 void mousePressed() {
 
@@ -303,11 +262,11 @@ void keyPressed() {
 
   if (screenGame) {
     if (keyCode == 65 || keyCode == 37) {
-      if (!colisionIzquierda()) desplazamientoX--;
+      if (!leftKnock()) desplazamientoX--;
     } else if (keyCode == 68 || keyCode == 39) {
-      if (!colisionDerecha()) desplazamientoX++;
+      if (!rightKnock()) desplazamientoX++;
     } else if (keyCode == 83 || keyCode == 40) {
-      if (!colisionAbajo()) desplazamientoY++;
+      if (!downKnock()) desplazamientoY++;
     } else if (key == 'p' || key == 'P') {
       screenPause = true;
       screenGame = false;
@@ -315,7 +274,7 @@ void keyPressed() {
       pRotation = tRotation;
       tRotation = (tRotation + 1)%4;
       // Agregada esta condición para evitar bugs en las rotaciones cerca de un borde.
-      if (colisionRotacion()) {
+      if (rotationKnock()) {
         tRotation = pRotation;
       };
     }
@@ -329,11 +288,11 @@ void keyPressed() {
     }
   } else if (screenHowToPlay) {
     //if (key == CODED) {
-      if (keyCode == 13) {//PREGUNTARLE AL PROFE
-        //Cambiamos el estado de las pantallas
-        screenHowToPlay = false;
-        screenGame = true;
-      }
+    if (keyCode == 13) {//PREGUNTARLE AL PROFE
+      //Cambiamos el estado de las pantallas
+      screenHowToPlay = false;
+      screenGame = true;
+    }
     //}
   } else if (screenPause) {
     if (key == 'p' || key == 'P') {
@@ -344,8 +303,37 @@ void keyPressed() {
 }
 
 
+
+//Funciones para cada pantalla
+
+// Pantalla de inicio
+
+void tetrisInicialScreen() {
+
+  //int pasox = 130;
+  //int pasoy = 70;
+  background(backColor);
+
+  push();
+  fill(bColor);
+  rect(buttonX, playButtonY, buttonW, buttonH, redondeo);
+  rect(buttonX, howButtonY, buttonW, buttonH, redondeo);
+  pop();
+
+  push();
+  textFont(fuente);
+  textSize(80);
+  textAlign(CENTER, CENTER);
+  fill(backColor);
+  text("JUGAR", buttonX + buttonW/2, playButtonY+buttonH/2);
+  text("¿COMO JUGAR?", buttonX + buttonW/2, howButtonY+buttonH/2);
+  pop();
+}
+
+
 // Pantalla de instrucciones
-void howToPlay() {
+
+void howToPlayScreen() {
   background(backColor);
   push();
   textFont(fuente);
@@ -382,6 +370,86 @@ void howToPlay() {
   text("ATRAS", backButtonX + buttonW2/2, buttonY2 + buttonH/2);
   pop();
 }
+
+
+
+//Pantalla de Juego
+
+void gameScreen() {
+
+  background(backColor);
+  drawTablero();
+  rectPiezaSig();
+  drawTetromino(numFiguraSig, 0);
+  drawTetromino(numFigura, 1);
+
+  if (millis() - timer >= intervalo) {
+    yMovement();
+    timer = millis();
+    deleteCompleteRows();
+  }
+
+  gameOver();
+  pauseBotton();
+}
+
+
+//Pantalla de Pausa
+
+void pauseScreen() {
+
+  background(backColor);
+  push();
+  fill(bColor);
+  rect(buttonX, continueButtonY, buttonW, buttonH, redondeo);
+  rect(buttonX, restartButtonY, buttonW, buttonH, redondeo);
+  rect(buttonX, howButtonY2, buttonW, buttonH, redondeo);
+  rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
+  pop();
+
+  push();
+  textFont(fuente);
+  textSize(80);
+  textAlign(CENTER, CENTER);
+  fill(backColor);
+  text("CONTINUAR", buttonX + buttonW/2, continueButtonY+buttonH/2);
+  text("RESTART", buttonX + buttonW/2, restartButtonY+buttonH/2);
+  text("¿COMOJUGAR?", buttonX + buttonW/2, howButtonY2+buttonH/2);
+  text("INICIO", buttonX + buttonW/2, inicioButtonY+buttonH/2);
+  pop();
+}
+
+
+//Pantalla de game over
+
+void gameOverSreen() {
+
+  background(backColor);
+
+  push();
+  fill(bColor);
+  rect(buttonX, restartButtonY2, buttonW, buttonH, redondeo); //Boton de restart, reutilizamos la variable de altura de How2
+  rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
+  pop();
+
+
+
+  push();
+  textFont(fuente);
+  textSize(80);
+  textAlign(CENTER, CENTER);
+  fill(backColor);
+  text("RESTART", buttonX + buttonW/2, howButtonY2+buttonH/2);
+  text("INICIO", buttonX + buttonW/2, inicioButtonY+buttonH/2);
+  pop();
+}
+
+
+
+
+//Funciones auxiliares para la jugabilidad
+
+//Funcion para dibujar los tetrominos en pantalla
 
 void drawTetromino(int numero, int siMovimiento) {
   switch (numero) {
@@ -443,35 +511,39 @@ void drawTetromino(int numero, int siMovimiento) {
   }
 }
 
-void rectPiezaSig(){
-  
-  
-  
+
+//Funcion para dibujar el rectangulo gris en el que se muestra el siguiente tetromino a dibujar
+
+void rectPiezaSig() {
+
   push();
   fill(bColor);
   stroke(backColor);
   strokeWeight(5);
-  rect(5,3*dimCuadro,6*dimCuadro,4*dimCuadro);
+  rect(5, 3*dimCuadro, 6*dimCuadro, 4*dimCuadro);
   pop();
-  
+
   push();
   fill(backColor);
   stroke(backColor);
   strokeWeight(5);
-  rect(45,4*dimCuadro,4*dimCuadro,2*dimCuadro);
+  rect(45, 4*dimCuadro, 4*dimCuadro, 2*dimCuadro);
   pop();
-  
+
   push();
   fill(backColor);
   strokeWeight(2);
-  for(int i = 5; i<=(6*dimCuadro+5); i += dimCuadro){
-    line(i,3*dimCuadro,i,7*dimCuadro);
+  for (int i = 5; i<=(6*dimCuadro+5); i += dimCuadro) {
+    line(i, 3*dimCuadro, i, 7*dimCuadro);
   }
-  for(int j=3*dimCuadro; j<=7*dimCuadro; j+=dimCuadro){
-    line(5,j,245,j);
+  for (int j=3*dimCuadro; j<=7*dimCuadro; j+=dimCuadro) {
+    line(5, j, 245, j);
   }
   pop();
 }
+
+
+//Funcion para devolver el tablero a su estado inicial (setup)
 
 void setupTablero() {
   //imprimirArrayList();
@@ -486,6 +558,8 @@ void setupTablero() {
   }
 }
 
+
+//Funcion para dibujar el tablero, junto con los tetrominos ya posicionados
 
 void drawTablero() {
   for (int i=0; i < rows; i++) {
@@ -519,15 +593,19 @@ void drawTablero() {
 
 
 
-boolean colisionIzquierda() {
+//Choques
+
+//Choque a la izquierda
+
+boolean leftKnock() {
 
   for (int j = 0; j < 4; j++)
   {
     for (int i = j; i < 16; i += 4) {
       if ((array[tRotation] & (1 << 15 - i)) != 0) {
-        posMX = (i%4) + desplazamientoX;
-        posMY = ((i/4)|0) + desplazamientoY;
-        if (tablero.get(posMY)[posMX-1] != 0)
+        posColisionX = (i%4) + desplazamientoX;
+        posColisionY = ((i/4)|0) + desplazamientoY;
+        if (tablero.get(posColisionY)[posColisionX-1] != 0)
           return true;
       }
     }
@@ -535,15 +613,17 @@ boolean colisionIzquierda() {
   return false;
 }
 
-boolean colisionDerecha() {
+//Choque a la derecha
+
+boolean rightKnock() {
 
   for (int j = 0; j < 4; j++)
   {
     for (int i = j; i < 16; i += 4) {
       if ((array[tRotation] & (1 << i)) != 0) {
-        posMX = ((15-i)%4) + desplazamientoX;
-        posMY = (((15-i)/4)|0) + desplazamientoY;
-        if (tablero.get(posMY)[posMX+1] != 0)
+        posColisionX = ((15-i)%4) + desplazamientoX;
+        posColisionY = (((15-i)/4)|0) + desplazamientoY;
+        if (tablero.get(posColisionY)[posColisionX+1] != 0)
           return true;
       }
     }
@@ -551,15 +631,18 @@ boolean colisionDerecha() {
   return false;
 }
 
-boolean colisionAbajo() {
+
+//Choque a la abajo
+
+boolean downKnock() {
 
   for (int i = 0; i < 16; i ++) {
     if ((array[tRotation] & (1 << i)) != 0) {
-      posMX = ((15-i)%4) + desplazamientoX;
-      posMY = (((15-i)/4)|0) + desplazamientoY;
-      if (tablero.get(posMY+1)[posMX] != 0) {
+      posColisionX = ((15-i)%4) + desplazamientoX;
+      posColisionY = (((15-i)/4)|0) + desplazamientoY;
+      if (tablero.get(posColisionY+1)[posColisionX] != 0) {
         if (!screenGameOver) {
-          siguienteFigura();
+          nextTetromino();
         }
         return true;
       }
@@ -568,26 +651,32 @@ boolean colisionAbajo() {
   return false;
 }
 
-boolean colisionRotacion() {
+
+//Choque al hacer una rotacion
+
+boolean rotationKnock() {
 
   for (int i = 0; i <= 15; i++) {
     if ((array[tRotation] & (1 << 15 - i)) != 0) {
-      posMX = (i%4) + desplazamientoX;
-      posMY = ((i/4)|0) + desplazamientoY;
-      if (tablero.get(posMY)[posMX] != 0) return true;
+      posColisionX = (i%4) + desplazamientoX;
+      posColisionY = ((i/4)|0) + desplazamientoY;
+      if (tablero.get(posColisionY)[posColisionX] != 0) return true;
     }
   }
   return false;
 }
 
-void siguienteFigura() {
-  //int posMX;
-  //int posMY;
+
+//Funcion para dibujar el siguiente tetromino, salva su posicion en la matriz y reinicia las variables, dando al tetromino a dibujar en movimiento el valor del tetromino que se encontraba como siguiente
+
+void nextTetromino() {
+  //int posColisionX;
+  //int posColisionY;
   for (int i = 0; i <= 15; i++) {
     if ((array[tRotation] & (1 << 15 - i)) != 0) {
-      posMX = (i%4) + desplazamientoX;
-      posMY = ((i/4)|0) + desplazamientoY;
-      tablero.get(posMY)[posMX] = colorTetromino;
+      posColisionX = (i%4) + desplazamientoX;
+      posColisionY = ((i/4)|0) + desplazamientoY;
+      tablero.get(posColisionY)[posColisionX] = colorTetromino;
     }
   }
 
@@ -598,11 +687,18 @@ void siguienteFigura() {
   desplazamientoY = 0;
 }
 
-void darPaso() {
-  if (!colisionAbajo()) desplazamientoY++;
+//Funcion para el movimiento en la vertical
+
+void yMovement() {
+  if (!downKnock()) { 
+    desplazamientoY++;
+  }
 }
 
-void filasCompletas() {
+
+//Funcion para eliminar filas que se encuentran completas
+
+void deleteCompleteRows() {
 
   for (int i = rows - 2; i >= 0; i--) {
     int j = 0;
@@ -617,6 +713,9 @@ void filasCompletas() {
   }
 }
 
+
+//Funcion para dibujar el boton de pausa en la pantalla de juego
+
 void pauseBotton() {
   push();
   ellipseMode(RADIUS);
@@ -628,30 +727,8 @@ void pauseBotton() {
   pop();
 }
 
-void pause() {
-  push();
-  fill(bColor);
-  rect(buttonX, continueButtonY, buttonW, buttonH, redondeo);
-  rect(buttonX, restartButtonY, buttonW, buttonH, redondeo);
-  rect(buttonX, howButtonY2, buttonW, buttonH, redondeo);
-  rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
-  pop();
 
-
-
-  push();
-  textFont(fuente);
-  textSize(80);
-  textAlign(CENTER, CENTER);
-  fill(backColor);
-  text("CONTINUAR", buttonX + buttonW/2, continueButtonY+buttonH/2);
-  text("RESTART", buttonX + buttonW/2, restartButtonY+buttonH/2);
-  text("¿COMOJUGAR?", buttonX + buttonW/2, howButtonY2+buttonH/2);
-  text("INICIO", buttonX + buttonW/2, inicioButtonY+buttonH/2);
-  pop();
-}
-
-
+//Funcion para reiniciar el juego cuando se oprima restart
 
 void restart() {
   //Asignamos el valor de 1 para las bordes del tablero
@@ -662,38 +739,16 @@ void restart() {
   tRotation = 0;
   desplazamientoX = 4;
   desplazamientoY = 0;
-  //screenGameOver = false;
+
 }
+
+//Funcion para saber si el jugador perdio
 
 void gameOver() {
   for (int j = 1; j < columns - 2; j++) {
     if (tablero.get(0)[j] != 0) {
       screenGame = false;
       screenGameOver = true;
-      
     }
   }
-}
-
-
-void gameOverSreen() {
-
-  background(backColor);
-
-  push();
-  fill(bColor);
-  rect(buttonX, restartButtonY2, buttonW, buttonH, redondeo); //Boton de restart, reutilizamos la variable de altura de How2
-  rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
-  pop();
-
-
-
-  push();
-  textFont(fuente);
-  textSize(80);
-  textAlign(CENTER, CENTER);
-  fill(backColor);
-  text("RESTART", buttonX + buttonW/2, howButtonY2+buttonH/2);
-  text("INICIO", buttonX + buttonW/2, inicioButtonY+buttonH/2);
-  pop();
 }
