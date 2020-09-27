@@ -2,6 +2,7 @@
 
 boolean screenInicial = true;
 boolean screenHowToPlay= false;
+boolean screenConfiguracion = false;
 boolean screenGame = false;
 boolean screenPause = false;
 boolean screenGameOver = false;
@@ -16,17 +17,22 @@ int backColor = 20; //Color de fondo del juego en RGB
 
 // Botones
 
-int buttonW = 730;  //Ancho botones de pantalla de inicio
-int buttonH = 120;  //Alto de botones de pantalla de inicio
-int buttonX = 125;  //Coordenada en x de botones de pantalla de inicio
+final int buttonW = 730;  //Ancho botones de pantalla de inicio
+final int buttonH = 120;  //Alto de botones de pantalla de inicio
+final int buttonX = 125;  //Coordenada en x de botones de pantalla de inicio
 
 //Boton jugar
 
-int playButtonY = 360;  //Coordenada en y del boton jugar de la pantalla de inicio
+final int playButtonY = 360;  //Coordenada en y del boton jugar de la pantalla de inicio
 
 //Boton como jugar
 
-int howButtonY = 520;  //Coordenada en y del boton como jugar de la pantalla de inicio
+final int howButtonY = 520;  //Coordenada en y del boton como jugar de la pantalla de inicio
+
+//Boton como jugar
+
+final int confButtonY = 680;  //Coordenada en y del boton configuracion de la pantalla de inicio
+
 
 //Fuente Textos
 
@@ -36,34 +42,34 @@ PFont fuente;  //Creamos una variable para almacenar una fuenta que introducimos
 
 //Botones
 
-int buttonW2 = 250; //Ancho de los botones de la pantalla de como jugar
-int buttonY2 = 620;  //Coordenada en y de los botones de la pantalla de como jugar
+final int buttonW2 = 250; //Ancho de los botones de la pantalla de como jugar
+final int buttonY2 = 620;  //Coordenada en y de los botones de la pantalla de como jugar
 
-int playButton2X = 670;  //Coordenada en x del boton de jugar en la pantalla de como jugar
+final int playButton2X = 670;  //Coordenada en x del boton de jugar en la pantalla de como jugar
 
-int backButtonX = 60;  //Coordenad en x del boton volver en la pantalla de como jugar
+final int backButtonX = 60;  //Coordenad en x del boton volver en la pantalla de como jugar
 
 //Pantalla de juego
 
 //Representacion del tablero en forma de una matriz 21X12
 
-int rows = 21;  //Filas de la matriz del tablero
-int columns = 12;  //Columnas de la matriz del tablero
+final int rows = 21;  //Filas de la matriz del tablero
+final int columns = 12;  //Columnas de la matriz del tablero
 
 //Utilizamos un ArrayList para facilitar la eliminacion y la adicionde filas
 ArrayList<color[]> tablero = new ArrayList<color[]>();
 
 //Definimos el ancho de cada cuadrado
-int dimCuadro = 40;
+final int dimCuadro = 40;
 
 //Representacion en numero binario de cada tetromino junto con sus rotaciones
-int [] I = {3840, 17476, 61440, 17476};  //Figura I
-int [] L = {59392, 50240, 11776, 35008};  //Figura L
-int [] S = {27648, 35904, 27648, 35904};  //Figura S
-int [] Z = {50688, 19584, 50688, 19584};  //Figura Z
-int [] J = {57856, 17600, 36352, 51328};  //Figura J
-int [] O = {52224, 52224, 52224, 52224};  //Figura O
-int [] T = {58368, 19520, 19968, 35968};  //Figura T
+final int [] I = {3840, 17476, 61440, 17476};  //Figura I
+final int [] L = {59392, 50240, 11776, 35008};  //Figura L
+final int [] S = {27648, 35904, 27648, 35904};  //Figura S
+final int [] Z = {50688, 19584, 50688, 19584};  //Figura Z
+final int [] J = {57856, 17600, 36352, 51328};  //Figura J
+final int [] O = {52224, 52224, 52224, 52224};  //Figura O
+final int [] T = {58368, 19520, 19968, 35968};  //Figura T
 
 //Valores importantes para la representacion
 
@@ -90,14 +96,14 @@ int posColisionY;
 
 //Colores en codigos hexadecimales
 
-color bColor = #E4E0E0;  //Color gris del tablero
-color IColor = #1EE1D4;  //Color de la figura I
-color LColor = #EE9709;  //Color de la figura L
-color SColor = #35C067;  //Color de la figura S
-color ZColor = #B81A16;  //Color de la figura Z
-color JColor = #26339A;  //Color de la figura J
-color OColor = #F7F619;  //Color de la figura O
-color TColor = #B056E7;  //Color de la figura T
+final color bColor = #E4E0E0;  //Color gris del tablero
+final color IColor = #1EE1D4;  //Color de la figura I
+final color LColor = #EE9709;  //Color de la figura L
+final color SColor = #35C067;  //Color de la figura S
+final color ZColor = #B81A16;  //Color de la figura Z
+final color JColor = #26339A;  //Color de la figura J
+final color OColor = #F7F619;  //Color de la figura O
+final color TColor = #B056E7;  //Color de la figura T
 
 //Parametro posicionX funcion draw Tetromino
 //int tableroX = 170;
@@ -112,30 +118,30 @@ int eliminatedRows = 0;
 
 //Boton de pausa
 
-int pauseBottonX = 855;
-int pauseBottonY = 100;
-int radioPauseButton = 50;
+final int pauseBottonX = 855;
+final int pauseBottonY = 100;
+final int radioPauseButton = 50;
 
 //Pantalla de pausa
 
 //Boton Continuar
 
-int continueButtonY = 60;  //Coordenada en y del boton continuar de la pantalla de pausa
+final int continueButtonY = 60;  //Coordenada en y del boton continuar de la pantalla de pausa
 
 //Boton restart
 
-int restartButtonY = 260;  //Coordenada en y del boton restart de la pantalla de pausa
+final int restartButtonY = 260;  //Coordenada en y del boton restart de la pantalla de pausa
 
 //Boton how
 
-int howButtonY2 = 460;  //Coordenada en y del boton como jugar de la pantalla de pausa
+final int howButtonY2 = 460;  //Coordenada en y del boton como jugar de la pantalla de pausa
 
 //Boton inicio
 
-int inicioButtonY = 660;  //Coordenada en y del boton inicio de la pantalla de pausa
+final int inicioButtonY = 660;  //Coordenada en y del boton inicio de la pantalla de pausa
 
 
-int restartButtonY2 = 460;
+final int restartButtonY2 = 460;
 
 
 
@@ -172,6 +178,11 @@ void draw() {
   else if (screenHowToPlay) {
     howToPlayScreen();
   }
+  
+  //Cuando se debe mostrar la pantalla de configuracion
+  else if (screenConfiguracion) {
+    background(255);
+  }
 
   //Cuando se deba mostrar la pantalla de pausa
   else if (screenPause) {
@@ -202,6 +213,12 @@ void mousePressed() {
       //Cambiamos el estado de las pantallas
       screenInicial = false;
       screenHowToPlay= true;
+    }
+    else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+      (mouseY > confButtonY) && (mouseY < confButtonY + buttonH)) {
+      //Cambiamos el estado de las pantallas
+      screenInicial = false;
+      screenConfiguracion= true;
     }
   } else if (screenHowToPlay) {
     if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
@@ -323,7 +340,10 @@ void tetrisInicialScreen() {
   fill(bColor);
   rect(buttonX, playButtonY, buttonW, buttonH, redondeo);
   rect(buttonX, howButtonY, buttonW, buttonH, redondeo);
+  rect(buttonX, confButtonY, buttonW, buttonH, redondeo);
   pop();
+  
+  
 
   push();
   textFont(fuente);
@@ -332,6 +352,7 @@ void tetrisInicialScreen() {
   fill(backColor);
   text("JUGAR", buttonX + buttonW/2, playButtonY+buttonH/2);
   text("¿COMO JUGAR?", buttonX + buttonW/2, howButtonY+buttonH/2);
+  text("CONFIGURACIÓN", buttonX + buttonW/2, confButtonY+buttonH/2);
   pop();
 }
 
@@ -777,6 +798,8 @@ void nivelActual(){
 //Funcion para mostrar nivel y resultado
 
 void levelScore(){
+  
+  
   push();
   fill(bColor);
   stroke(backColor);
@@ -801,5 +824,18 @@ void levelScore(){
   text(nivel, 775 + 2*dimCuadro, 6*dimCuadro + 80);
   text("SCORE", 775 + 2*dimCuadro, 9*dimCuadro + 30);
   text(puntaje, 775 + 2*dimCuadro, 9*dimCuadro + 80);
+  pop();
+  
+  push();
+  fill(backColor);
+  strokeWeight(2);
+  for (int i = 735; i<=735+6*dimCuadro; i += 40){
+    line(i, 5*dimCuadro, i, 6*dimCuadro);
+    line(i, 12*dimCuadro, i, 13*dimCuadro);
+  }
+  for(int j = 5*dimCuadro; j <= 13*dimCuadro; j+=dimCuadro){
+    line(735, j, 735 + dimCuadro, j);
+    line(735 + 5*dimCuadro, j, 735 + 6*dimCuadro, j);
+  }
   pop();
 }
