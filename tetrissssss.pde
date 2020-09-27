@@ -106,6 +106,9 @@ color TColor = #B056E7;  //Color de la figura T
 //Tiempo
 int timer;  //Tiempo 
 int intervalo = 1000;  //Nos dice la velocidad con la que baja la pieza, la utilizamos dependiendo de los niveles
+int puntaje = 0;
+int nivel = 1;
+int eliminatedRows = 0;
 
 //Boton de pausa
 
@@ -179,6 +182,8 @@ void draw() {
   else if (screenGameOver) {
     gameOverSreen();
   }
+  
+  println(puntaje, nivel, eliminatedRows, intervalo);
 }
 
 
@@ -379,6 +384,7 @@ void gameScreen() {
 
   background(backColor);
   drawTablero();
+  levelScore();
   rectPiezaSig();
   drawTetromino(numFiguraSig, 0);
   drawTetromino(numFigura, 1);
@@ -391,6 +397,7 @@ void gameScreen() {
 
   gameOver();
   pauseBotton();
+  nivelActual();
 }
 
 
@@ -503,7 +510,7 @@ void drawTetromino(int numero, int siMovimiento) {
     for (int i = 0; i <= 15; i++) {
       if ((array[0] & (1 << 15 - i)) != 0) {
         posX = (i%4)*dimCuadro + 45;
-        posY = ((i/4)|0) * dimCuadro + 4*dimCuadro;
+        posY = ((i/4)|0) * dimCuadro + 8*dimCuadro;
         square(posX, posY, dimCuadro);
       }
     }
@@ -520,23 +527,23 @@ void rectPiezaSig() {
   fill(bColor);
   stroke(backColor);
   strokeWeight(5);
-  rect(5, 3*dimCuadro, 6*dimCuadro, 4*dimCuadro);
+  rect(5, 7*dimCuadro, 6*dimCuadro, 4*dimCuadro);
   pop();
 
   push();
   fill(backColor);
   stroke(backColor);
   strokeWeight(5);
-  rect(45, 4*dimCuadro, 4*dimCuadro, 2*dimCuadro);
+  rect(45, 8*dimCuadro, 4*dimCuadro, 2*dimCuadro);
   pop();
 
   push();
   fill(backColor);
   strokeWeight(2);
   for (int i = 5; i<=(6*dimCuadro+5); i += dimCuadro) {
-    line(i, 3*dimCuadro, i, 7*dimCuadro);
+    line(i, 7*dimCuadro, i, 11*dimCuadro);
   }
-  for (int j=3*dimCuadro; j<=7*dimCuadro; j+=dimCuadro) {
+  for (int j=7*dimCuadro; j<=11*dimCuadro; j+=dimCuadro) {
     line(5, j, 245, j);
   }
   pop();
@@ -709,8 +716,12 @@ void deleteCompleteRows() {
       tablero.add(0, new color[columns]);
       tablero.get(0)[0] = backColor;
       tablero.get(0)[columns-1] = backColor;
+      puntaje = puntaje + (100*nivel);
+      eliminatedRows +=1;
     }
   }
+  
+  
 }
 
 
@@ -751,4 +762,44 @@ void gameOver() {
       screenGameOver = true;
     }
   }
+}
+
+//Funcion nivel
+
+void nivelActual(){
+  if((puntaje!=0) && (eliminatedRows == 5) && (nivel < 10)){
+    nivel += 1;
+    intervalo -= 60;
+    eliminatedRows = 0;
+  }
+}
+
+//Funcion para mostrar nivel y resultado
+
+void levelScore(){
+  push();
+  fill(bColor);
+  stroke(backColor);
+  strokeWeight(5);
+  rect(735, 5*dimCuadro, 6*dimCuadro, 8*dimCuadro);
+  pop();
+
+  push();
+  fill(backColor);
+  stroke(backColor);
+  strokeWeight(5);
+  rect(775, 6*dimCuadro, 4*dimCuadro, 6*dimCuadro);
+  pop();
+  
+  
+  push();
+  textFont(fuente);
+  textSize(40);
+  textAlign(CENTER, CENTER);
+  fill(bColor);
+  text("LEVEL", 775 + 2*dimCuadro, 6*dimCuadro + 30);
+  text(nivel, 775 + 2*dimCuadro, 6*dimCuadro + 80);
+  text("SCORE", 775 + 2*dimCuadro, 9*dimCuadro + 30);
+  text(puntaje, 775 + 2*dimCuadro, 9*dimCuadro + 80);
+  pop();
 }
