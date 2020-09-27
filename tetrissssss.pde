@@ -6,6 +6,7 @@ boolean screenConfiguracion = false;
 boolean screenGame = false;
 boolean screenPause = false;
 boolean screenGameOver = false;
+boolean screenRestart = false;
 
 //Pantalla de inicio 
 
@@ -61,6 +62,13 @@ final int levelButtonX5 = 700;
 
 final int levelButtonY1 = 150;
 final int levelButtonY2 = 280;
+
+//Pantalla restart
+
+final int dimYesNoButtonX = 200;
+final int yesNoButtonY = 450;
+final int yesButtonX = 190;
+final int noButtonX = 590;
 
 
 //Pantalla de juego
@@ -207,6 +215,11 @@ void draw() {
   else if (screenGameOver) {
     gameOverSreen();
   }
+  
+  
+  else if (screenRestart){
+    screenRestartGame();
+  }
 
   println(puntaje, nivel, eliminatedRows, intervalo);
 }
@@ -323,7 +336,7 @@ void mousePressed() {
       (mouseY > restartButtonY) && (mouseY < restartButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenPause = false;
-      screenGame= true;
+      screenRestart= true;
       restart();
     } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > howButtonY2) && (mouseY < howButtonY2 + buttonH)) {
@@ -341,10 +354,33 @@ void mousePressed() {
     if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > restartButtonY2) && (mouseY < restartButtonY2 + buttonH)) {
       //Cambiamos el estado de las pantallas
-      screenGame = true;
+      screenRestart = true;
       screenGameOver = false;
       restart();
     } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+      (mouseY > inicioButtonY) && (mouseY < inicioButtonY + buttonH)) {
+      //Cambiamos el estado de las pantallas
+      screenInicial = true;
+      screenGameOver = false;
+      restart();
+    }
+  }else if(screenRestart){
+    if ((mouseX > yesButtonX) && (mouseX < yesButtonX + dimYesNoButtonX) && 
+      (mouseY > yesNoButtonY) && (mouseY < yesNoButtonY + buttonH)) {
+      //Cambiamos el estado de las pantallas
+      screenRestart = false;
+      screenGame = true;
+      restart();
+    } else if ((mouseX > noButtonX) && (mouseX < noButtonX + dimYesNoButtonX) && 
+      (mouseY > yesNoButtonY) && (mouseY < yesNoButtonY + buttonH)) {
+      //Cambiamos el estado de las pantallas
+      intervalo = 1000;
+      nivel = 1;
+      screenRestart = false;
+      screenGame = true;
+      restart();
+    }
+    else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > inicioButtonY) && (mouseY < inicioButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenInicial = true;
@@ -598,6 +634,40 @@ void gameOverSreen() {
 }
 
 
+void screenRestartGame(){
+  background(backColor);
+  
+  push();
+  fill(bColor);
+  rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
+  rect(yesButtonX,yesNoButtonY,dimYesNoButtonX, buttonH, redondeo);
+  rect(noButtonX,yesNoButtonY,dimYesNoButtonX, buttonH, redondeo);
+  pop();
+  
+  push();
+  textFont(fuente);
+  textAlign(CENTER, CENTER);
+  fill(240);
+  //Titulo
+  textSize(80);
+  text("Reiniciar el juego", width/2, 80);
+  
+  //Texto Botones
+  fill(backColor);
+  text("SI", yesButtonX + dimYesNoButtonX/2, yesNoButtonY +buttonH/2);
+  text("NO", noButtonX + dimYesNoButtonX/2, yesNoButtonY +buttonH/2);
+  text("INICIO", buttonX + buttonW/2, inicioButtonY +buttonH/2);
+  
+  //Cuerpo
+  textSize(40);
+  fill(240);
+  text("¿Al reiniciar el juego deseas", width/2, 200);
+  text("continuar en el nivel", width/2, 260);
+  text("en el que te encuentras?", width/2, 320);
+  pop();
+  
+  
+}
 
 
 //Funciones auxiliares para la jugabilidad
@@ -894,6 +964,8 @@ void restart() {
   tRotation = 0;
   desplazamientoX = 4;
   desplazamientoY = 0;
+  puntaje = 0;
+  eliminatedRows = 0;
 }
 
 //Funcion para saber si el jugador perdio
