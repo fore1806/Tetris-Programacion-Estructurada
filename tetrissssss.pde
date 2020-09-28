@@ -141,6 +141,7 @@ final color bColor = #E4E0E0;  //Color gris del tablero
 //Tiempo
 int timer;  //Tiempo 
 int intervalo = 1000;  //Nos dice la velocidad con la que baja la pieza, la utilizamos dependiendo de los niveles
+int cambioIntervalo = 100;
 int puntaje = 0;
 int nivel = 1;
 int eliminatedRows = 0;
@@ -270,39 +271,39 @@ void mousePressed() {
     } else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
       (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
       nivel = 2;
-      intervalo = 910;
+      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
     } else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
       (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
       nivel = 3;
-      intervalo = 820;
+      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
     } else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
       (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
       nivel = 4;
-      intervalo = 730;
+      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
     } else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
       (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
       nivel = 5;
-      intervalo = 640;
+      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
     } else if ((mouseX > levelButtonX1) && (mouseX < levelButtonX1 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 6;
-      intervalo = 550;
+      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
     } else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 7;
-      intervalo = 460;
+      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
     } else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 8;
-      intervalo = 370;
+      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
     } else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 9;
-      intervalo = 280;
+      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
     } else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 10;
-      intervalo = 190;
+      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
     } else if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
       (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
       //Cambiamos el estado de las pantallas
@@ -666,38 +667,10 @@ void screenRestartGame() {
 //Funcion para dibujar los tetrominos en pantalla
 
 void drawTetromino(int numero, int siMovimiento) {
-  //switch (numero) {
-  //case 0:
-  //  array = I;
-  //  colorTetromino = IColor;
-  //  break;
-  //case 1:
-  //  array = L;
-  //  colorTetromino = LColor;
-  //  break;
-  //case 2:
-  //  array = S;
-  //  colorTetromino = SColor;
-  //  break;
-  //case 3:
-  //  array = Z;
-  //  colorTetromino = ZColor;
-  //  break;
-  //case 4:
-  //  array = J;
-  //  colorTetromino = JColor;
-  //  break;
-  //case 5:
-  //  array = O;
-  //  colorTetromino = OColor;
-  //  break;
-  //case 6:
-  //  array = T;
-  //  colorTetromino = TColor;
-  //  break;
-  //}
 
+  //Definimos el color aqui, para no tener que definirlo posteriormente a la hora de guardar
   colorTetromino =tetrominoColor[numero]; 
+  
   if (siMovimiento ==1) {
     push();
     //translate(0, -40); //Arranca a dibujar los tetrominos un poco arriba
