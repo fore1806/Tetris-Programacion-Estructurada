@@ -95,7 +95,16 @@ final int [] T = {58368, 19520, 19968, 35968};  //Figura T
 
 //Valores importantes para la representacion
 
-int [] array;  //Esta variable determinara que tetromino representar mas adelante
+// Matriz en la que almacenamos los valores binarios de cada rotacion de los tetrominos
+
+final int [][] arrayTetrominos = {{3840, 17476, 61440, 17476}, // Valores Binarios de las Rotaciones de la Figura I
+  {59392, 50240, 11776, 35008}, // Valores Binarios de las Rotaciones de la Figura L
+  {27648, 35904, 27648, 35904}, // Valores Binarios de las Rotaciones de la Figura S
+  {50688, 19584, 50688, 19584}, // Valores Binarios de las Rotaciones de la Figura z
+  {57856, 17600, 36352, 51328}, // Valores Binarios de las Rotaciones de la Figura J
+  {26112, 26112, 26112, 26112}, // Valores Binarios de las Rotaciones de la Figura O
+  {58368, 19520, 19968, 35968}};// Valores Binarios de las Rotaciones de la Figura T
+
 color colorTetromino;  //Esta variable nos determinara el color del tetromino a dibujar
 int numFigura = (int)random (7);  //Esta variable nos dira cual tetromino pintar despues
 int numFiguraSig = (int)random (7);  //Esta variable nos dira cual tetromino pintar antes
@@ -118,14 +127,12 @@ int posColisionY;
 
 //Colores en codigos hexadecimales
 
+//Matriz para los colores de los tetrominos
+
+//                                IColor , LColor, SColor,  ZColor,  JColor,  OColor, TColor 
+final color [] tetrominoColor = {#1EE1D4, #EE9709, #35C067, #B81A16, #26339A, #F7F619, #B056E7};
+
 final color bColor = #E4E0E0;  //Color gris del tablero
-final color IColor = #1EE1D4;  //Color de la figura I
-final color LColor = #EE9709;  //Color de la figura L
-final color SColor = #35C067;  //Color de la figura S
-final color ZColor = #B81A16;  //Color de la figura Z
-final color JColor = #26339A;  //Color de la figura J
-final color OColor = #F7F619;  //Color de la figura O
-final color TColor = #B056E7;  //Color de la figura T
 
 //Parametro posicionX funcion draw Tetromino
 //int tableroX = 170;
@@ -214,10 +221,7 @@ void draw() {
   //Cuando se deba mostrar la pantalla de game over
   else if (screenGameOver) {
     gameOverSreen();
-  }
-  
-  
-  else if (screenRestart){
+  } else if (screenRestart) {
     screenRestartGame();
   }
 
@@ -263,53 +267,43 @@ void mousePressed() {
       (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
       nivel = 1;
       intervalo = 1000;
-    }
-    else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
+    } else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
       (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
       nivel = 2;
       intervalo = 910;
-    }
-    else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
+    } else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
       (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
       nivel = 3;
       intervalo = 820;
-    }
-    else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
+    } else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
       (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
       nivel = 4;
       intervalo = 730;
-    }
-    else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
+    } else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
       (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
       nivel = 5;
       intervalo = 640;
-    }
-    else if ((mouseX > levelButtonX1) && (mouseX < levelButtonX1 + dimLevelBoton) && 
+    } else if ((mouseX > levelButtonX1) && (mouseX < levelButtonX1 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 6;
       intervalo = 550;
-    }
-    else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
+    } else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 7;
       intervalo = 460;
-    }
-    else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
+    } else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 8;
       intervalo = 370;
-    }
-    else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
+    } else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 9;
       intervalo = 280;
-    }
-    else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
+    } else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
       (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
       nivel = 10;
       intervalo = 190;
-    }
-    else if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
+    } else if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
       (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenGame = true;
@@ -364,7 +358,7 @@ void mousePressed() {
       screenGameOver = false;
       restart();
     }
-  }else if(screenRestart){
+  } else if (screenRestart) {
     if ((mouseX > yesButtonX) && (mouseX < yesButtonX + dimYesNoButtonX) && 
       (mouseY > yesNoButtonY) && (mouseY < yesNoButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
@@ -379,8 +373,7 @@ void mousePressed() {
       screenRestart = false;
       screenGame = true;
       restart();
-    }
-    else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
+    } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
       (mouseY > inicioButtonY) && (mouseY < inicioButtonY + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenInicial = true;
@@ -395,11 +388,11 @@ void keyPressed() {
 
   if (screenGame) {
     if (keyCode == 65 || keyCode == 37) {
-      if (!leftKnock()) desplazamientoX--;
+      if (!leftKnock(numFigura)) desplazamientoX--;
     } else if (keyCode == 68 || keyCode == 39) {
-      if (!rightKnock()) desplazamientoX++;
+      if (!rightKnock(numFigura)) desplazamientoX++;
     } else if (keyCode == 83 || keyCode == 40) {
-      if (!downKnock()) desplazamientoY++;
+      if (!downKnock(numFigura)) desplazamientoY++;
     } else if (key == 'p' || key == 'P') {
       screenPause = true;
       screenGame = false;
@@ -407,7 +400,7 @@ void keyPressed() {
       pRotation = tRotation;
       tRotation = (tRotation + 1)%4;
       // Agregada esta condición para evitar bugs en las rotaciones cerca de un borde.
-      if (rotationKnock()) {
+      if (rotationKnock(numFigura)) {
         tRotation = pRotation;
       };
     }
@@ -527,10 +520,10 @@ void configuracionScreen() {
   square(levelButtonX3, levelButtonY2, dimLevelBoton);
   square(levelButtonX4, levelButtonY2, dimLevelBoton);
   square(levelButtonX5, levelButtonY2, dimLevelBoton);
-  
+
   rect(playButton2X, buttonY2, buttonW2, buttonH, redondeo);
   rect(backButtonX, buttonY2, buttonW2, buttonH, redondeo);
-  
+
   pop();
 
   push();
@@ -553,10 +546,10 @@ void configuracionScreen() {
   text("8", levelButtonX3 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
   text("9", levelButtonX4 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
   text("10", levelButtonX5 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
-  
+
   text("JUGAR", playButton2X + buttonW2/2, buttonY2 + buttonH/2);
   text("ATRAS", backButtonX + buttonW2/2, buttonY2 + buttonH/2);
-  
+
   pop();
 }
 
@@ -634,16 +627,16 @@ void gameOverSreen() {
 }
 
 
-void screenRestartGame(){
+void screenRestartGame() {
   background(backColor);
-  
+
   push();
   fill(bColor);
   rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
-  rect(yesButtonX,yesNoButtonY,dimYesNoButtonX, buttonH, redondeo);
-  rect(noButtonX,yesNoButtonY,dimYesNoButtonX, buttonH, redondeo);
+  rect(yesButtonX, yesNoButtonY, dimYesNoButtonX, buttonH, redondeo);
+  rect(noButtonX, yesNoButtonY, dimYesNoButtonX, buttonH, redondeo);
   pop();
-  
+
   push();
   textFont(fuente);
   textAlign(CENTER, CENTER);
@@ -651,13 +644,13 @@ void screenRestartGame(){
   //Titulo
   textSize(80);
   text("Reiniciar el juego", width/2, 80);
-  
+
   //Texto Botones
   fill(backColor);
   text("SI", yesButtonX + dimYesNoButtonX/2, yesNoButtonY +buttonH/2);
   text("NO", noButtonX + dimYesNoButtonX/2, yesNoButtonY +buttonH/2);
   text("INICIO", buttonX + buttonW/2, inicioButtonY +buttonH/2);
-  
+
   //Cuerpo
   textSize(40);
   fill(240);
@@ -665,8 +658,6 @@ void screenRestartGame(){
   text("continuar en el nivel", width/2, 260);
   text("en el que te encuentras?", width/2, 320);
   pop();
-  
-  
 }
 
 
@@ -675,44 +666,45 @@ void screenRestartGame(){
 //Funcion para dibujar los tetrominos en pantalla
 
 void drawTetromino(int numero, int siMovimiento) {
-  switch (numero) {
-  case 0:
-    array = I;
-    colorTetromino = IColor;
-    break;
-  case 1:
-    array = L;
-    colorTetromino = LColor;
-    break;
-  case 2:
-    array = S;
-    colorTetromino = SColor;
-    break;
-  case 3:
-    array = Z;
-    colorTetromino = ZColor;
-    break;
-  case 4:
-    array = J;
-    colorTetromino = JColor;
-    break;
-  case 5:
-    array = O;
-    colorTetromino = OColor;
-    break;
-  case 6:
-    array = T;
-    colorTetromino = TColor;
-    break;
-  }
+  //switch (numero) {
+  //case 0:
+  //  array = I;
+  //  colorTetromino = IColor;
+  //  break;
+  //case 1:
+  //  array = L;
+  //  colorTetromino = LColor;
+  //  break;
+  //case 2:
+  //  array = S;
+  //  colorTetromino = SColor;
+  //  break;
+  //case 3:
+  //  array = Z;
+  //  colorTetromino = ZColor;
+  //  break;
+  //case 4:
+  //  array = J;
+  //  colorTetromino = JColor;
+  //  break;
+  //case 5:
+  //  array = O;
+  //  colorTetromino = OColor;
+  //  break;
+  //case 6:
+  //  array = T;
+  //  colorTetromino = TColor;
+  //  break;
+  //}
 
+  colorTetromino =tetrominoColor[numero]; 
   if (siMovimiento ==1) {
     push();
     //translate(0, -40); //Arranca a dibujar los tetrominos un poco arriba
     strokeWeight(2);
     fill(colorTetromino);
     for (int i = 0; i <= 15; i++) {
-      if ((array[tRotation] & (1 << 15 - i)) != 0) {
+      if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
         posX = (i%4)*dimCuadro + desplazamientoX*dimCuadro + 250;
         posY = ((i/4)|0) * dimCuadro + desplazamientoY*dimCuadro;
         square(posX, posY, dimCuadro);
@@ -724,7 +716,7 @@ void drawTetromino(int numero, int siMovimiento) {
     strokeWeight(2);
     fill(colorTetromino);
     for (int i = 0; i <= 15; i++) {
-      if ((array[0] & (1 << 15 - i)) != 0) {
+      if ((arrayTetrominos[numero][0] & (1 << 15 - i)) != 0) {
         posX = (i%4)*dimCuadro + 45;
         posY = ((i/4)|0) * dimCuadro + 8*dimCuadro;
         square(posX, posY, dimCuadro);
@@ -820,12 +812,12 @@ void drawTablero() {
 
 //Choque a la izquierda
 
-boolean leftKnock() {
+boolean leftKnock(int numero) {
 
   for (int j = 0; j < 4; j++)
   {
     for (int i = j; i < 16; i += 4) {
-      if ((array[tRotation] & (1 << 15 - i)) != 0) {
+      if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
         posColisionX = (i%4) + desplazamientoX;
         posColisionY = ((i/4)|0) + desplazamientoY;
         if (tablero.get(posColisionY)[posColisionX-1] != 0)
@@ -838,12 +830,12 @@ boolean leftKnock() {
 
 //Choque a la derecha
 
-boolean rightKnock() {
+boolean rightKnock(int numero) {
 
   for (int j = 0; j < 4; j++)
   {
     for (int i = j; i < 16; i += 4) {
-      if ((array[tRotation] & (1 << i)) != 0) {
+      if ((arrayTetrominos[numero][tRotation] & (1 << i)) != 0) {
         posColisionX = ((15-i)%4) + desplazamientoX;
         posColisionY = (((15-i)/4)|0) + desplazamientoY;
         if (tablero.get(posColisionY)[posColisionX+1] != 0)
@@ -857,15 +849,15 @@ boolean rightKnock() {
 
 //Choque a la abajo
 
-boolean downKnock() {
+boolean downKnock(int numero) {
 
   for (int i = 0; i < 16; i ++) {
-    if ((array[tRotation] & (1 << i)) != 0) {
+    if ((arrayTetrominos[numero][tRotation] & (1 << i)) != 0) {
       posColisionX = ((15-i)%4) + desplazamientoX;
       posColisionY = (((15-i)/4)|0) + desplazamientoY;
       if (tablero.get(posColisionY+1)[posColisionX] != 0) {
         if (!screenGameOver) {
-          nextTetromino();
+          nextTetromino(numFigura);
         }
         return true;
       }
@@ -877,10 +869,10 @@ boolean downKnock() {
 
 //Choque al hacer una rotacion
 
-boolean rotationKnock() {
+boolean rotationKnock(int numero) {
 
   for (int i = 0; i <= 15; i++) {
-    if ((array[tRotation] & (1 << 15 - i)) != 0) {
+    if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
       posColisionX = (i%4) + desplazamientoX;
       posColisionY = ((i/4)|0) + desplazamientoY;
       if (tablero.get(posColisionY)[posColisionX] != 0) return true;
@@ -892,11 +884,11 @@ boolean rotationKnock() {
 
 //Funcion para dibujar el siguiente tetromino, salva su posicion en la matriz y reinicia las variables, dando al tetromino a dibujar en movimiento el valor del tetromino que se encontraba como siguiente
 
-void nextTetromino() {
+void nextTetromino(int numero) {
   //int posColisionX;
   //int posColisionY;
   for (int i = 0; i <= 15; i++) {
-    if ((array[tRotation] & (1 << 15 - i)) != 0) {
+    if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
       posColisionX = (i%4) + desplazamientoX;
       posColisionY = ((i/4)|0) + desplazamientoY;
       tablero.get(posColisionY)[posColisionX] = colorTetromino;
@@ -913,7 +905,7 @@ void nextTetromino() {
 //Funcion para el movimiento en la vertical
 
 void yMovement() {
-  if (!downKnock()) { 
+  if (!downKnock(numFigura)) { 
     desplazamientoY++;
   }
 }
