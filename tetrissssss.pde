@@ -52,7 +52,7 @@ final int backButtonX = 60;  //Coordenad en x del boton volver en la pantalla de
 
 //Pantalla de como jugar
 
-final int dimLevelBoton = 100;
+final int dimLevelButton = 100;
 
 final int levelButtonX1 = 180;
 final int levelButtonX2 = 310;
@@ -69,6 +69,9 @@ final int dimYesNoButtonX = 200;
 final int yesNoButtonY = 450;
 final int yesButtonX = 190;
 final int noButtonX = 590;
+
+//Pantalla de Seleccion de colores
+
 
 
 //Pantalla de juego
@@ -264,47 +267,10 @@ void mousePressed() {
       screenHowToPlay= false;
     }
   } else if (screenConfiguracion) {
-    if ((mouseX > levelButtonX1) && (mouseX < levelButtonX1 + dimLevelBoton) && 
-      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
-      nivel = 1;
-      intervalo = 1000;
-    } else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
-      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
-      nivel = 2;
-      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
-    } else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
-      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
-      nivel = 3;
-      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
-    } else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
-      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
-      nivel = 4;
-      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
-    } else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
-      (mouseY > levelButtonY1) && (mouseY < levelButtonY1 + dimLevelBoton)) {
-      nivel = 5;
-      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
-    } else if ((mouseX > levelButtonX1) && (mouseX < levelButtonX1 + dimLevelBoton) && 
-      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
-      nivel = 6;
-      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
-    } else if ((mouseX > levelButtonX2) && (mouseX < levelButtonX2 + dimLevelBoton) && 
-      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
-      nivel = 7;
-      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
-    } else if ((mouseX > levelButtonX3) && (mouseX < levelButtonX3 + dimLevelBoton) && 
-      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
-      nivel = 8;
-      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
-    } else if ((mouseX > levelButtonX4) && (mouseX < levelButtonX4 + dimLevelBoton) && 
-      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
-      nivel = 9;
-      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
-    } else if ((mouseX > levelButtonX5) && (mouseX < levelButtonX5 + dimLevelBoton) && 
-      (mouseY > levelButtonY2) && (mouseY < levelButtonY2 + dimLevelBoton)) {
-      nivel = 10;
-      intervalo = 1000 - ((nivel-1)*cambioIntervalo);
-    } else if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
+    
+    nivelSeleccionado();
+    
+    if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
       (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
       //Cambiamos el estado de las pantallas
       screenGame = true;
@@ -440,7 +406,8 @@ void tetrisInicialScreen() {
   //int pasox = 130;
   //int pasoy = 70;
   background(backColor);
-
+  
+  
   push();
   fill(bColor);
   rect(buttonX, playButtonY, buttonW, buttonH, redondeo);
@@ -448,6 +415,9 @@ void tetrisInicialScreen() {
   rect(buttonX, confButtonY, buttonW, buttonH, redondeo);
   pop();
 
+
+fill(255,0,0);
+  rect(100, 50,780,300);
 
 
   push();
@@ -510,17 +480,17 @@ void configuracionScreen() {
 
   push();
   fill(bColor);
-  square(levelButtonX1, levelButtonY1, dimLevelBoton);
-  square(levelButtonX2, levelButtonY1, dimLevelBoton);
-  square(levelButtonX3, levelButtonY1, dimLevelBoton);
-  square(levelButtonX4, levelButtonY1, dimLevelBoton);
-  square(levelButtonX5, levelButtonY1, dimLevelBoton);
+  square(levelButtonX1, levelButtonY1, dimLevelButton);
+  square(levelButtonX2, levelButtonY1, dimLevelButton);
+  square(levelButtonX3, levelButtonY1, dimLevelButton);
+  square(levelButtonX4, levelButtonY1, dimLevelButton);
+  square(levelButtonX5, levelButtonY1, dimLevelButton);
 
-  square(levelButtonX1, levelButtonY2, dimLevelBoton);
-  square(levelButtonX2, levelButtonY2, dimLevelBoton);
-  square(levelButtonX3, levelButtonY2, dimLevelBoton);
-  square(levelButtonX4, levelButtonY2, dimLevelBoton);
-  square(levelButtonX5, levelButtonY2, dimLevelBoton);
+  square(levelButtonX1, levelButtonY2, dimLevelButton);
+  square(levelButtonX2, levelButtonY2, dimLevelButton);
+  square(levelButtonX3, levelButtonY2, dimLevelButton);
+  square(levelButtonX4, levelButtonY2, dimLevelButton);
+  square(levelButtonX5, levelButtonY2, dimLevelButton);
 
   rect(playButton2X, buttonY2, buttonW2, buttonH, redondeo);
   rect(backButtonX, buttonY2, buttonW2, buttonH, redondeo);
@@ -537,21 +507,57 @@ void configuracionScreen() {
 
   //texto Botones
   fill(backColor);
-  text("1", levelButtonX1 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
-  text("2", levelButtonX2 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
-  text("3", levelButtonX3 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
-  text("4", levelButtonX4 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
-  text("5", levelButtonX5 + dimLevelBoton/2, levelButtonY1 + dimLevelBoton/2);
-  text("6", levelButtonX1 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
-  text("7", levelButtonX2 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
-  text("8", levelButtonX3 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
-  text("9", levelButtonX4 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
-  text("10", levelButtonX5 + dimLevelBoton/2, levelButtonY2 + dimLevelBoton/2);
+  text("1", levelButtonX1 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
+  text("2", levelButtonX2 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
+  text("3", levelButtonX3 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
+  text("4", levelButtonX4 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
+  text("5", levelButtonX5 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
+  text("6", levelButtonX1 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
+  text("7", levelButtonX2 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
+  text("8", levelButtonX3 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
+  text("9", levelButtonX4 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
+  text("10", levelButtonX5 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
 
   text("JUGAR", playButton2X + buttonW2/2, buttonY2 + buttonH/2);
   text("ATRAS", backButtonX + buttonW2/2, buttonY2 + buttonH/2);
 
   pop();
+}
+
+//Funcion para seleccionar el nivel
+
+void nivelSeleccionado(){
+  for (int i = 0; i<5; i++){
+    for (int j=0; j<2; j++){
+      if((mouseX>180 + i*130) && (mouseX<(180 + i*130+dimLevelButton)) && (mouseY>150+ j*130) && (mouseY<(150+ j*130 + dimLevelButton))){
+        nivel = (i+1) + (5*j);
+        intervalo = 1000-((nivel-1)*cambioIntervalo);
+      }
+    }
+  }
+}
+
+//Pantalla Seleccion de Colores
+
+void seleccionColoresScreen(){
+  
+  //Dibuja todos los tetrominos
+  for (int k = 0; k<=6; k++){
+  push();
+    strokeWeight(2);
+    fill(tetrominoColor[k]);
+    for (int i = 0; i <= 15; i++) {
+      if ((arrayTetrominos[k][0] & (1 << 15 - i)) != 0) {
+        posX = (i%4)*dimCuadro + 150;
+        posY = ((i/4)|0) * dimCuadro + dimCuadro + k*dimCuadro*3 - 20;
+        square(posX, posY, dimCuadro);
+      }
+    }
+    pop();
+  }
+  
+  //Botones
+  
 }
 
 //Pantalla de Juego
@@ -614,6 +620,8 @@ void gameOverSreen() {
   rect(buttonX, restartButtonY2, buttonW, buttonH, redondeo); //Boton de restart, reutilizamos la variable de altura de How2
   rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
   pop();
+  fill(255,0,0);
+  rect(100, 50,780,300);
 
 
 
