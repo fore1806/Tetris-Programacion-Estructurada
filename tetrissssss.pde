@@ -8,6 +8,9 @@ boolean screenPause = false;
 boolean screenGameOver = false;
 boolean screenRestart = false;
 
+PImage tetrisImagen;// Imagen de inicio
+PImage gameOverImagen;//Imagen del game Over
+
 //Pantalla de inicio 
 
 int yText = 100; //altura desde arriba para el mensaje tetris
@@ -184,6 +187,10 @@ void setup() {
 
   //Fuente para los textos
   fuente = loadFont("Cambria-Bold-80.vlw");
+  
+  //Cargamos las imagenes
+  tetrisImagen = loadImage("tetris.png");
+  gameOverImagen = loadImage("game_over.png");
 
   // Creamos ArrayList de arreglos de ceros como elementos
   tablero = new ArrayList<color[]>();
@@ -416,8 +423,9 @@ void tetrisInicialScreen() {
   pop();
 
 
-fill(255,0,0);
-  rect(100, 50,780,300);
+  image(tetrisImagen,20,20,940,330);
+//fill(255,0,0);
+//  rect(100, 50,780,300);
 
 
   push();
@@ -620,8 +628,10 @@ void gameOverSreen() {
   rect(buttonX, restartButtonY2, buttonW, buttonH, redondeo); //Boton de restart, reutilizamos la variable de altura de How2
   rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
   pop();
-  fill(255,0,0);
-  rect(100, 50,780,300);
+  
+  image(gameOverImagen,20,20,940,330);
+  //fill(255,0,0);
+  //rect(100, 50,780,300);
 
 
 
