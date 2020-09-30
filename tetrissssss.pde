@@ -3,6 +3,8 @@
 boolean screenInicial = true;
 boolean screenHowToPlay= false;
 boolean screenConfiguracion = false;
+boolean screenNiveles = false;
+boolean screenColores = false;
 boolean screenGame = false;
 boolean screenPause = false;
 boolean screenGameOver = false;
@@ -53,7 +55,14 @@ final int playButton2X = 670;  //Coordenada en x del boton de jugar en la pantal
 
 final int backButtonX = 60;  //Coordenad en x del boton volver en la pantalla de como jugar
 
-//Pantalla de como jugar
+//Pantalla de configuracion
+
+final int configButtonX = 680;
+
+final int configButtonY = 50;
+
+final int originalButtonX = 200;
+final int originalButtonY = 450;
 
 final int dimLevelButton = 100;
 
@@ -75,7 +84,10 @@ final int noButtonX = 590;
 
 //Pantalla de Seleccion de colores
 
+int posicionXCuadroColor;
+int posicionYCuadroColor;
 
+color [][] matrizColores = new color [5][7];
 
 //Pantalla de juego
 
@@ -136,7 +148,7 @@ int posColisionY;
 //Matriz para los colores de los tetrominos
 
 //                                IColor , LColor, SColor,  ZColor,  JColor,  OColor, TColor 
-final color [] tetrominoColor = {#1EE1D4, #EE9709, #35C067, #B81A16, #26339A, #F7F619, #B056E7};
+color [] tetrominoColor = {#1EE1D4, #EE9709, #35C067, #B81A16, #26339A, #F7F619, #B056E7};
 
 final color bColor = #E4E0E0;  //Color gris del tablero
 
@@ -199,6 +211,8 @@ void setup() {
     tablero.add(new color[columns]);
   }
   setupTablero();
+  
+  llenarRandomColors();
 }
 
 
@@ -223,6 +237,16 @@ void draw() {
   else if (screenConfiguracion) {
     configuracionScreen();
   }
+  
+  //Cuando se deben mostrar los niveles
+  else if(screenNiveles){
+    nivelesScreen();
+  }
+  
+  //Cuando se deben mostrar los niveles
+  else if(screenColores){
+    coloresScreen();
+  }
 
   //Cuando se deba mostrar la pantalla de pausa
   else if (screenPause) {
@@ -232,7 +256,9 @@ void draw() {
   //Cuando se deba mostrar la pantalla de game over
   else if (screenGameOver) {
     gameOverSreen();
-  } else if (screenRestart) {
+  }
+  
+  else if (screenRestart) {
     screenRestartGame();
   }
 
@@ -275,7 +301,7 @@ void mousePressed() {
     }
   } else if (screenConfiguracion) {
     
-    nivelSeleccionado();
+    //nivelSeleccionado();
     
     if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
       (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
@@ -287,8 +313,48 @@ void mousePressed() {
       //Cambiamos el estado de la pantalla
       screenInicial = true;
       screenConfiguracion= false;
+    } else if ((mouseX > configButtonX) && (mouseX < configButtonX + 200) && 
+      (mouseY > configButtonY) && (mouseY < configButtonY + buttonH)) {
+      //Cambiamos el estado de la pantalla
+      screenNiveles = true;
+      screenConfiguracion= false;
+    }else if ((mouseX > configButtonX) && (mouseX < configButtonX + 200) && 
+      (mouseY > (configButtonY + buttonH + 50)) && (mouseY < (configButtonY + buttonH + 50) + buttonH)) {
+      //Cambiamos el estado de la pantalla
+      screenColores = true;
+      screenConfiguracion= false;
+    }else if ((mouseX > originalButtonX) && (mouseX < originalButtonX + 580) && 
+      (mouseY > originalButtonY) && (mouseY < originalButtonY + buttonH)) {
+      //Cambiamos el estado de la pantalla
+      nivel = 1;
+      intervalo = 1000;
+      tetrominoColor[0] = #1EE1D4; tetrominoColor[1] = #EE9709; tetrominoColor[2] =#35C067;
+      tetrominoColor[3] = #B81A16; tetrominoColor[4] = #26339A; tetrominoColor[5] = #F7F619;
+      tetrominoColor[6] =#B056E7;
     }
-  } else if (screenGame) {
+  }
+  
+  else if (screenColores){
+    colorSeleccionado();
+  }
+  
+  else if (screenNiveles){
+    nivelSeleccionado();
+    
+    if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
+      (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
+      //Cambiamos el estado de las pantallas
+      screenGame = true;
+      screenNiveles = false;
+    } else if ((mouseX > backButtonX) && (mouseX < backButtonX + buttonW2) && 
+      (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
+      //Cambiamos el estado de la pantalla
+      screenConfiguracion = true;
+      screenNiveles = false;
+  }
+  }
+  
+  else if (screenGame) {
     float d = dist(mouseX, mouseY, pauseBottonX, pauseBottonY);
     if (d<radioPauseButton) {
       screenGame = false;
@@ -378,26 +444,114 @@ void keyPressed() {
         tRotation = pRotation;
       };
     }
-  } else if (screenInicial) {
-    if (key == CODED) {
-      if (keyCode == ENTER) {//PREGUNTARLE AL PROFE
-        //Cambiamos el estado de las pantallas
-        screenInicial = false;
-        screenGame = true;
-      }
+  } else if(screenColores){
+    if(key == 'p' || key == 'P'){
+      
+      screenColores = false;
+      screenGame = true;
+      
+    } else if (key =='b' || key == 'B'){
+      
+      screenColores = false;
+      screenConfiguracion = true;
     }
-  } else if (screenHowToPlay) {
-    //if (key == CODED) {
-    if (keyCode == 13) {//PREGUNTARLE AL PROFE
-      //Cambiamos el estado de las pantallas
+    
+  }
+  else if(screenNiveles){
+    if(key == 'p' || key == 'P'){
+      
+      screenNiveles = false;
+      screenGame = true;
+      
+    } else if (key =='b' || key == 'B'){
+      
+      screenNiveles = false;
+      screenConfiguracion = true;
+    }
+    
+  }
+  else if (screenInicial) {
+    if(key == 'p' || key == 'P'){
+      
+      screenInicial = false;
+      screenGame = true;
+      
+    } else if (key =='c' || key == 'C'){
+      
+      screenInicial = false;
+      screenConfiguracion = true;
+      
+    } else if (key == 'h' || key =='H'){
+      
+      screenInicial = false;
+      screenHowToPlay = true;
+      
+    }
+  } 
+  
+  else if (screenHowToPlay) {
+    if(key == 'p' || key == 'P'){
+      
       screenHowToPlay = false;
       screenGame = true;
-    }
-    //}
-  } else if (screenPause) {
+      
+    } else if (key =='b' || key == 'B'){
+      
+      screenHowToPlay = false;
+      screenInicial = true;
+    }  
+  } 
+  
+  else if (screenPause) {
     if (key == 'p' || key == 'P') {
       screenPause = false;
       screenGame = true;
+    } else if(key == 'i' || key == 'I'){
+      screenPause = false;
+      screenInicial = true;
+      restart();
+    }else if(key == 'h' || key == 'H'){
+      screenPause = false;
+      screenHowToPlay = true;
+    }else if(key == 'r' || key == 'R'){
+      screenPause = false;
+      screenRestart = true;
+    }
+  }
+  
+  else if (screenConfiguracion){
+    if(key == 'p' || key == 'P'){
+      
+      screenConfiguracion = false;
+      screenGame = true;
+      
+    } else if (key =='b' || key == 'B'){
+      
+      screenConfiguracion = false;
+      screenInicial = true;
+    } else if (key == 'c' || key == 'C'){
+      screenConfiguracion = false;
+      screenColores = true;
+    } else if (key == 'n' || key == 'N'){
+      screenConfiguracion = false;
+      screenNiveles = true;
+    } else if (key == 'i' || key == 'I'){
+      nivel = 1;
+      intervalo = 1000;
+      tetrominoColor[0] = #1EE1D4; tetrominoColor[1] = #EE9709; tetrominoColor[2] =#35C067;
+      tetrominoColor[3] = #B81A16; tetrominoColor[4] = #26339A; tetrominoColor[5] = #F7F619;
+      tetrominoColor[6] =#B056E7;
+    }
+  }
+  
+  else if (screenGameOver){
+    if (key == 'r' || key == 'R') {
+      screenGameOver = false;
+      screenRestart = true;
+    } else if(key == 'i' || key == 'I'){
+      screenGameOver = false;
+      screenInicial = true;
+      restart();
     }
   }
 }
@@ -488,47 +642,80 @@ void configuracionScreen() {
 
   push();
   fill(bColor);
-  square(levelButtonX1, levelButtonY1, dimLevelButton);
-  square(levelButtonX2, levelButtonY1, dimLevelButton);
-  square(levelButtonX3, levelButtonY1, dimLevelButton);
-  square(levelButtonX4, levelButtonY1, dimLevelButton);
-  square(levelButtonX5, levelButtonY1, dimLevelButton);
 
-  square(levelButtonX1, levelButtonY2, dimLevelButton);
-  square(levelButtonX2, levelButtonY2, dimLevelButton);
-  square(levelButtonX3, levelButtonY2, dimLevelButton);
-  square(levelButtonX4, levelButtonY2, dimLevelButton);
-  square(levelButtonX5, levelButtonY2, dimLevelButton);
-
+  rect(configButtonX,configButtonY,200,buttonH, redondeo);
+  rect(configButtonX,(configButtonY + buttonH + 50),200,buttonH, redondeo);
   rect(playButton2X, buttonY2, buttonW2, buttonH, redondeo);
   rect(backButtonX, buttonY2, buttonW2, buttonH, redondeo);
+  rect(originalButtonX,originalButtonY, 580, buttonH, redondeo);
+  
 
   pop();
+  
+  
 
   push();
   textFont(fuente);
   textAlign(CENTER, CENTER);
   fill(240);
   //Titulo
-  textSize(80);
-  text("Selecciona el nivel", width/2, 80);
+  textSize(60);
+  text("Nivel inicial", 315, configButtonY+buttonH/2);
+  text("Colores", 315, (configButtonY + buttonH + 50)+buttonH/2 );
 
   //texto Botones
   fill(backColor);
-  text("1", levelButtonX1 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
-  text("2", levelButtonX2 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
-  text("3", levelButtonX3 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
-  text("4", levelButtonX4 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
-  text("5", levelButtonX5 + dimLevelButton/2, levelButtonY1 + dimLevelButton/2);
-  text("6", levelButtonX1 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
-  text("7", levelButtonX2 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
-  text("8", levelButtonX3 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
-  text("9", levelButtonX4 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
-  text("10", levelButtonX5 + dimLevelButton/2, levelButtonY2 + dimLevelButton/2);
-
+  textSize(25);
+  text("PERSONALIZAR", configButtonX + 100, configButtonY+buttonH/2);
+  text("PERSONALIZAR", configButtonX + 100, (configButtonY + buttonH + 50)+buttonH/2 );
+  textSize(45);
+  text("CONFIGURACIÓN INICIAL", width/2, originalButtonY + buttonH/2);
+  textSize(80);
   text("JUGAR", playButton2X + buttonW2/2, buttonY2 + buttonH/2);
   text("ATRAS", backButtonX + buttonW2/2, buttonY2 + buttonH/2);
+  
 
+  pop();
+}
+
+//Pantalla de niveles
+
+void nivelesScreen(){
+  background(backColor);
+  
+  push();
+  fill(bColor);
+  strokeWeight(2);
+  for(int i = 0; i < 5; i++){
+    for (int j = 0; j < 2; j++){
+      rect(levelButtonX1 + i*130, levelButtonY1 + j*130, dimLevelButton, dimLevelButton, redondeo);
+    }
+  }
+  
+  rect(playButton2X, buttonY2, buttonW2, buttonH, redondeo);
+  rect(backButtonX, buttonY2, buttonW2, buttonH, redondeo);
+  
+  pop();
+  
+  push();
+  
+  textFont(fuente);
+  textAlign(CENTER, CENTER);
+  fill(backColor);
+  textSize(80);
+  
+  int numeroNivel;
+  
+  for(int i = 0; i < 5; i++){
+    for (int j = 0; j < 2; j++){
+      numeroNivel = (i+1)+5*j;
+      text(numeroNivel, levelButtonX1 + i*130 + dimLevelButton/2, levelButtonY1 + j*130 + dimLevelButton/2);
+    }
+  }
+  
+  text("JUGAR", playButton2X + buttonW2/2, buttonY2 + buttonH/2);
+  text("ATRAS", backButtonX + buttonW2/2, buttonY2 + buttonH/2);
+  
   pop();
 }
 
@@ -545,13 +732,24 @@ void nivelSeleccionado(){
   }
 }
 
-//Pantalla Seleccion de Colores
+//Pantalla de colores
 
-void seleccionColoresScreen(){
-  
-  //Dibuja todos los tetrominos
-  for (int k = 0; k<=6; k++){
-  push();
+void coloresScreen(){
+  background(220);
+  for (int i=0; i<=4;i++){
+    for (int j=0; j<=6; j++){
+      push();
+      strokeWeight(2);
+      fill(matrizColores[i][j]);
+      posicionXCuadroColor = 490 + i*80;
+      posicionYCuadroColor = dimCuadro + 3*j*dimCuadro;
+      square(posicionXCuadroColor,posicionYCuadroColor,dimCuadro);
+      pop();
+    }
+  }
+
+  for (int k = 0; k<=6; k++) {
+    push();
     strokeWeight(2);
     fill(tetrominoColor[k]);
     for (int i = 0; i <= 15; i++) {
@@ -563,9 +761,27 @@ void seleccionColoresScreen(){
     }
     pop();
   }
-  
-  //Botones
-  
+}
+
+void llenarRandomColors(){
+  for (int i=0; i<=4;i++){
+    for (int j=0; j<=6; j++){
+      int r = (int)random(256);
+      int g = (int)random(256);
+      int b = (int)random(256);
+      matrizColores[i][j] = color(r,g,b);      
+    }
+  }
+}
+
+void colorSeleccionado(){
+  for (int i = 0; i<5; i++){
+    for (int j=0; j<7; j++){
+      if((mouseX>490 + i*80) && (mouseX<(490 + i*80+dimCuadro)) && (mouseY>dimCuadro + 3*j*dimCuadro) && (mouseY<(dimCuadro + 3*j*dimCuadro + dimCuadro))){
+        tetrominoColor[j] = matrizColores[i][j];
+      }
+    }
+  }
 }
 
 //Pantalla de Juego
@@ -611,7 +827,7 @@ void pauseScreen() {
   fill(backColor);
   text("CONTINUAR", buttonX + buttonW/2, continueButtonY+buttonH/2);
   text("RESTART", buttonX + buttonW/2, restartButtonY+buttonH/2);
-  text("¿COMOJUGAR?", buttonX + buttonW/2, howButtonY2+buttonH/2);
+  text("¿COMO JUGAR?", buttonX + buttonW/2, howButtonY2+buttonH/2);
   text("INICIO", buttonX + buttonW/2, inicioButtonY+buttonH/2);
   pop();
 }
@@ -645,6 +861,7 @@ void gameOverSreen() {
   pop();
 }
 
+//Pantalla de Restart
 
 void screenRestartGame() {
   background(backColor);
