@@ -10,6 +10,8 @@ boolean screenPause = false;
 boolean screenGameOver = false;
 boolean screenRestart = false;
 
+boolean ultimaPieza = false;
+
 PImage tetrisImagen;// Imagen de inicio
 PImage gameOverImagen;//Imagen del game Over
 
@@ -891,7 +893,7 @@ void drawTetromino(int numero, int siMovimiento) {
 
   //Definimos el color aqui, para no tener que definirlo posteriormente a la hora de guardar
   colorTetromino =tetrominoColor[numero]; 
-  boolean ultimaPieza = false;
+  
 
   if (siMovimiento ==1) {
     push();
@@ -1061,8 +1063,24 @@ boolean rightKnock(int numero) {
 //Choque a la abajo
 
 boolean downKnock(int numero) {
-
-  for (int i = 0; i < 16; i ++) {
+  if(ultimaPieza){
+    for (int i = 0; i < 16; i ++) {
+    if ((arrayTetrominos[numero][tRotation] & (1 << i)) != 0) {
+      posColisionX = ((15-i)%4) + desplazamientoX;
+      posColisionY = (((15-i)/4)|0) + desplazamientoY -40;
+      if ((tablero.get(posColisionY+1+40)[posColisionX] != 0)&&(tablero.get(posColisionY+40)[posColisionX] != 0)) {
+        if (!screenGameOver) {
+          nextTetromino(numFigura);
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+  }
+  
+  else{
+    for (int i = 0; i < 16; i ++) {
     if ((arrayTetrominos[numero][tRotation] & (1 << i)) != 0) {
       posColisionX = ((15-i)%4) + desplazamientoX;
       posColisionY = (((15-i)/4)|0) + desplazamientoY;
@@ -1075,6 +1093,9 @@ boolean downKnock(int numero) {
     }
   }
   return false;
+  }
+  
+  
 }
 
 
@@ -1098,12 +1119,24 @@ boolean rotationKnock(int numero) {
 void nextTetromino(int numero) {
   //int posColisionX;
   //int posColisionY;
+  if(ultimaPieza){
+    for (int i = 0; i <= 15; i++) {
+    if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
+      posColisionX = (i%4) + desplazamientoX;
+      posColisionY = ((i/4)|0) + desplazamientoY - 1;
+      if(posColisionY>=0){
+      tablero.get(posColisionY)[posColisionX] = colorTetromino;
+      }
+    }
+  }
+  }else{
   for (int i = 0; i <= 15; i++) {
     if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
       posColisionX = (i%4) + desplazamientoX;
       posColisionY = ((i/4)|0) + desplazamientoY;
       tablero.get(posColisionY)[posColisionX] = colorTetromino;
     }
+  }
   }
 
   numFigura = numFiguraSig;
@@ -1183,6 +1216,7 @@ void restart() {
   desplazamientoY = 0;
   puntaje = 0;
   eliminatedRows = 0;
+  ultimaPieza = false;
 }
 
 //Funcion para saber si el jugador perdio
