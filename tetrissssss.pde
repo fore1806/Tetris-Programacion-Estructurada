@@ -191,6 +191,11 @@ final int inicioButtonY = 660;  //Coordenada en y del boton inicio de la pantall
 
 final int restartButtonY2 = 460;
 
+//Eliminacion de filas
+
+int[] filasLlenas = {20, 20, 20, 20};
+int filasAEliminar = 0;
+
 
 
 void setup() {
@@ -199,7 +204,7 @@ void setup() {
 
   //Fuente para los textos
   fuente = loadFont("Cambria-Bold-80.vlw");
-  
+
   //Cargamos las imagenes
   tetrisImagen = loadImage("tetris.png");
   gameOverImagen = loadImage("game_over.png");
@@ -211,7 +216,7 @@ void setup() {
     tablero.add(new color[columns]);
   }
   setupTablero();
-  
+
   llenarRandomColors();
 }
 
@@ -237,14 +242,14 @@ void draw() {
   else if (screenConfiguracion) {
     configuracionScreen();
   }
-  
+
   //Cuando se deben mostrar los niveles
-  else if(screenNiveles){
+  else if (screenNiveles) {
     nivelesScreen();
   }
-  
+
   //Cuando se deben mostrar los niveles
-  else if(screenColores){
+  else if (screenColores) {
     coloresScreen();
   }
 
@@ -256,9 +261,7 @@ void draw() {
   //Cuando se deba mostrar la pantalla de game over
   else if (screenGameOver) {
     gameOverSreen();
-  }
-  
-  else if (screenRestart) {
+  } else if (screenRestart) {
     screenRestartGame();
   }
 
@@ -300,9 +303,9 @@ void mousePressed() {
       screenHowToPlay= false;
     }
   } else if (screenConfiguracion) {
-    
+
     //nivelSeleccionado();
-    
+
     if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
       (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
       //Cambiamos el estado de las pantallas
@@ -318,29 +321,29 @@ void mousePressed() {
       //Cambiamos el estado de la pantalla
       screenNiveles = true;
       screenConfiguracion= false;
-    }else if ((mouseX > configButtonX) && (mouseX < configButtonX + 200) && 
+    } else if ((mouseX > configButtonX) && (mouseX < configButtonX + 200) && 
       (mouseY > (configButtonY + buttonH + 50)) && (mouseY < (configButtonY + buttonH + 50) + buttonH)) {
       //Cambiamos el estado de la pantalla
       screenColores = true;
       screenConfiguracion= false;
-    }else if ((mouseX > originalButtonX) && (mouseX < originalButtonX + 580) && 
+    } else if ((mouseX > originalButtonX) && (mouseX < originalButtonX + 580) && 
       (mouseY > originalButtonY) && (mouseY < originalButtonY + buttonH)) {
       //Cambiamos el estado de la pantalla
       nivel = 1;
       intervalo = 1000;
-      tetrominoColor[0] = #1EE1D4; tetrominoColor[1] = #EE9709; tetrominoColor[2] =#35C067;
-      tetrominoColor[3] = #B81A16; tetrominoColor[4] = #26339A; tetrominoColor[5] = #F7F619;
+      tetrominoColor[0] = #1EE1D4; 
+      tetrominoColor[1] = #EE9709; 
+      tetrominoColor[2] =#35C067;
+      tetrominoColor[3] = #B81A16; 
+      tetrominoColor[4] = #26339A; 
+      tetrominoColor[5] = #F7F619;
       tetrominoColor[6] =#B056E7;
     }
-  }
-  
-  else if (screenColores){
+  } else if (screenColores) {
     colorSeleccionado();
-  }
-  
-  else if (screenNiveles){
+  } else if (screenNiveles) {
     nivelSeleccionado();
-    
+
     if ((mouseX > playButton2X) && (mouseX < playButton2X + buttonW2) && 
       (mouseY > buttonY2) && (mouseY < buttonY2 + buttonH)) {
       //Cambiamos el estado de las pantallas
@@ -351,10 +354,8 @@ void mousePressed() {
       //Cambiamos el estado de la pantalla
       screenConfiguracion = true;
       screenNiveles = false;
-  }
-  }
-  
-  else if (screenGame) {
+    }
+  } else if (screenGame) {
     float d = dist(mouseX, mouseY, pauseBottonX, pauseBottonY);
     if (d<radioPauseButton) {
       screenGame = false;
@@ -444,111 +445,96 @@ void keyPressed() {
         tRotation = pRotation;
       };
     }
-  } else if(screenColores){
-    if(key == 'p' || key == 'P'){
-      
+  } else if (screenColores) {
+    if (key == 'p' || key == 'P') {
+
       screenColores = false;
       screenGame = true;
-      
-    } else if (key =='b' || key == 'B'){
-      
+    } else if (key =='b' || key == 'B') {
+
       screenColores = false;
       screenConfiguracion = true;
     }
-    
-  }
-  else if(screenNiveles){
-    if(key == 'p' || key == 'P'){
-      
+  } else if (screenNiveles) {
+    if (key == 'p' || key == 'P') {
+
       screenNiveles = false;
       screenGame = true;
-      
-    } else if (key =='b' || key == 'B'){
-      
+    } else if (key =='b' || key == 'B') {
+
       screenNiveles = false;
       screenConfiguracion = true;
     }
-    
-  }
-  else if (screenInicial) {
-    if(key == 'p' || key == 'P'){
-      
+  } else if (screenInicial) {
+    if (key == 'p' || key == 'P') {
+
       screenInicial = false;
       screenGame = true;
-      
-    } else if (key =='c' || key == 'C'){
-      
+    } else if (key =='c' || key == 'C') {
+
       screenInicial = false;
       screenConfiguracion = true;
-      
-    } else if (key == 'h' || key =='H'){
-      
+    } else if (key == 'h' || key =='H') {
+
       screenInicial = false;
       screenHowToPlay = true;
-      
     }
-  } 
-  
-  else if (screenHowToPlay) {
-    if(key == 'p' || key == 'P'){
-      
+  } else if (screenHowToPlay) {
+    if (key == 'p' || key == 'P') {
+
       screenHowToPlay = false;
       screenGame = true;
-      
-    } else if (key =='b' || key == 'B'){
-      
+    } else if (key =='b' || key == 'B') {
+
       screenHowToPlay = false;
       screenInicial = true;
-    }  
-  } 
-  
-  else if (screenPause) {
+    }
+  } else if (screenPause) {
     if (key == 'p' || key == 'P') {
       screenPause = false;
       screenGame = true;
-    } else if(key == 'i' || key == 'I'){
+    } else if (key == 'i' || key == 'I') {
       screenPause = false;
       screenInicial = true;
       restart();
-    }else if(key == 'h' || key == 'H'){
+    } else if (key == 'h' || key == 'H') {
       screenPause = false;
       screenHowToPlay = true;
-    }else if(key == 'r' || key == 'R'){
+    } else if (key == 'r' || key == 'R') {
       screenPause = false;
       screenRestart = true;
     }
-  }
-  
-  else if (screenConfiguracion){
-    if(key == 'p' || key == 'P'){
-      
+  } else if (screenConfiguracion) {
+    if (key == 'p' || key == 'P') {
+
       screenConfiguracion = false;
       screenGame = true;
-      
-    } else if (key =='b' || key == 'B'){
-      
+    } else if (key =='b' || key == 'B') {
+
       screenConfiguracion = false;
       screenInicial = true;
-    } else if (key == 'c' || key == 'C'){
+    } else if (key == 'c' || key == 'C') {
       screenConfiguracion = false;
       screenColores = true;
-    } else if (key == 'n' || key == 'N'){
+    } else if (key == 'n' || key == 'N') {
       screenConfiguracion = false;
       screenNiveles = true;
-    } else if (key == 'i' || key == 'I'){
+    } else if (key == 'i' || key == 'I') {
       nivel = 1;
       intervalo = 1000;
-      tetrominoColor[0] = #1EE1D4; tetrominoColor[1] = #EE9709; tetrominoColor[2] =#35C067;
-      tetrominoColor[3] = #B81A16; tetrominoColor[4] = #26339A; tetrominoColor[5] = #F7F619;
+      tetrominoColor[0] = #1EE1D4; 
+      tetrominoColor[1] = #EE9709; 
+      tetrominoColor[2] =#35C067;
+      tetrominoColor[3] = #B81A16; 
+      tetrominoColor[4] = #26339A; 
+      tetrominoColor[5] = #F7F619;
       tetrominoColor[6] =#B056E7;
     }
-  }
-  
-  else if (screenGameOver){
+  } else if (screenGameOver) {
     if (key == 'r' || key == 'R') {
       screenGameOver = false;
       screenRestart = true;
-    } else if(key == 'i' || key == 'I'){
+    } else if (key == 'i' || key == 'I') {
       screenGameOver = false;
       screenInicial = true;
       restart();
@@ -567,8 +553,8 @@ void tetrisInicialScreen() {
   //int pasox = 130;
   //int pasoy = 70;
   background(backColor);
-  
-  
+
+
   push();
   fill(bColor);
   rect(buttonX, playButtonY, buttonW, buttonH, redondeo);
@@ -577,9 +563,9 @@ void tetrisInicialScreen() {
   pop();
 
 
-  image(tetrisImagen,20,20,940,330);
-//fill(255,0,0);
-//  rect(100, 50,780,300);
+  image(tetrisImagen, 20, 20, 940, 330);
+  //fill(255,0,0);
+  //  rect(100, 50,780,300);
 
 
   push();
@@ -643,16 +629,16 @@ void configuracionScreen() {
   push();
   fill(bColor);
 
-  rect(configButtonX,configButtonY,200,buttonH, redondeo);
-  rect(configButtonX,(configButtonY + buttonH + 50),200,buttonH, redondeo);
+  rect(configButtonX, configButtonY, 200, buttonH, redondeo);
+  rect(configButtonX, (configButtonY + buttonH + 50), 200, buttonH, redondeo);
   rect(playButton2X, buttonY2, buttonW2, buttonH, redondeo);
   rect(backButtonX, buttonY2, buttonW2, buttonH, redondeo);
-  rect(originalButtonX,originalButtonY, 580, buttonH, redondeo);
-  
+  rect(originalButtonX, originalButtonY, 580, buttonH, redondeo);
+
 
   pop();
-  
-  
+
+
 
   push();
   textFont(fuente);
@@ -673,58 +659,58 @@ void configuracionScreen() {
   textSize(80);
   text("JUGAR", playButton2X + buttonW2/2, buttonY2 + buttonH/2);
   text("ATRAS", backButtonX + buttonW2/2, buttonY2 + buttonH/2);
-  
+
 
   pop();
 }
 
 //Pantalla de niveles
 
-void nivelesScreen(){
+void nivelesScreen() {
   background(backColor);
-  
+
   push();
   fill(bColor);
   strokeWeight(2);
-  for(int i = 0; i < 5; i++){
-    for (int j = 0; j < 2; j++){
+  for (int i = 0; i < 5; i++) {
+    for (int j = 0; j < 2; j++) {
       rect(levelButtonX1 + i*130, levelButtonY1 + j*130, dimLevelButton, dimLevelButton, redondeo);
     }
   }
-  
+
   rect(playButton2X, buttonY2, buttonW2, buttonH, redondeo);
   rect(backButtonX, buttonY2, buttonW2, buttonH, redondeo);
-  
+
   pop();
-  
+
   push();
-  
+
   textFont(fuente);
   textAlign(CENTER, CENTER);
   fill(backColor);
   textSize(80);
-  
+
   int numeroNivel;
-  
-  for(int i = 0; i < 5; i++){
-    for (int j = 0; j < 2; j++){
+
+  for (int i = 0; i < 5; i++) {
+    for (int j = 0; j < 2; j++) {
       numeroNivel = (i+1)+5*j;
       text(numeroNivel, levelButtonX1 + i*130 + dimLevelButton/2, levelButtonY1 + j*130 + dimLevelButton/2);
     }
   }
-  
+
   text("JUGAR", playButton2X + buttonW2/2, buttonY2 + buttonH/2);
   text("ATRAS", backButtonX + buttonW2/2, buttonY2 + buttonH/2);
-  
+
   pop();
 }
 
 //Funcion para seleccionar el nivel
 
-void nivelSeleccionado(){
-  for (int i = 0; i<5; i++){
-    for (int j=0; j<2; j++){
-      if((mouseX>180 + i*130) && (mouseX<(180 + i*130+dimLevelButton)) && (mouseY>150+ j*130) && (mouseY<(150+ j*130 + dimLevelButton))){
+void nivelSeleccionado() {
+  for (int i = 0; i<5; i++) {
+    for (int j=0; j<2; j++) {
+      if ((mouseX>180 + i*130) && (mouseX<(180 + i*130+dimLevelButton)) && (mouseY>150+ j*130) && (mouseY<(150+ j*130 + dimLevelButton))) {
         nivel = (i+1) + (5*j);
         intervalo = 1000-((nivel-1)*cambioIntervalo);
       }
@@ -734,16 +720,16 @@ void nivelSeleccionado(){
 
 //Pantalla de colores
 
-void coloresScreen(){
-  background(220);
-  for (int i=0; i<=4;i++){
-    for (int j=0; j<=6; j++){
+void coloresScreen() {
+  background(backColor);
+  for (int i=0; i<=4; i++) {
+    for (int j=0; j<=6; j++) {
       push();
       strokeWeight(2);
       fill(matrizColores[i][j]);
       posicionXCuadroColor = 490 + i*80;
       posicionYCuadroColor = dimCuadro + 3*j*dimCuadro;
-      square(posicionXCuadroColor,posicionYCuadroColor,dimCuadro);
+      square(posicionXCuadroColor, posicionYCuadroColor, dimCuadro);
       pop();
     }
   }
@@ -763,21 +749,21 @@ void coloresScreen(){
   }
 }
 
-void llenarRandomColors(){
-  for (int i=0; i<=4;i++){
-    for (int j=0; j<=6; j++){
+void llenarRandomColors() {
+  for (int i=0; i<=4; i++) {
+    for (int j=0; j<=6; j++) {
       int r = (int)random(256);
       int g = (int)random(256);
       int b = (int)random(256);
-      matrizColores[i][j] = color(r,g,b);      
+      matrizColores[i][j] = color(r, g, b);
     }
   }
 }
 
-void colorSeleccionado(){
-  for (int i = 0; i<5; i++){
-    for (int j=0; j<7; j++){
-      if((mouseX>490 + i*80) && (mouseX<(490 + i*80+dimCuadro)) && (mouseY>dimCuadro + 3*j*dimCuadro) && (mouseY<(dimCuadro + 3*j*dimCuadro + dimCuadro))){
+void colorSeleccionado() {
+  for (int i = 0; i<5; i++) {
+    for (int j=0; j<7; j++) {
+      if ((mouseX>490 + i*80) && (mouseX<(490 + i*80+dimCuadro)) && (mouseY>dimCuadro + 3*j*dimCuadro) && (mouseY<(dimCuadro + 3*j*dimCuadro + dimCuadro))) {
         tetrominoColor[j] = matrizColores[i][j];
       }
     }
@@ -844,8 +830,8 @@ void gameOverSreen() {
   rect(buttonX, restartButtonY2, buttonW, buttonH, redondeo); //Boton de restart, reutilizamos la variable de altura de How2
   rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
   pop();
-  
-  image(gameOverImagen,20,20,940,330);
+
+  image(gameOverImagen, 20, 20, 940, 330);
   //fill(255,0,0);
   //rect(100, 50,780,300);
 
@@ -905,17 +891,34 @@ void drawTetromino(int numero, int siMovimiento) {
 
   //Definimos el color aqui, para no tener que definirlo posteriormente a la hora de guardar
   colorTetromino =tetrominoColor[numero]; 
-  
+  boolean ultimaPieza = false;
+
   if (siMovimiento ==1) {
     push();
-    //translate(0, -40); //Arranca a dibujar los tetrominos un poco arriba
     strokeWeight(2);
     fill(colorTetromino);
-    for (int i = 0; i <= 15; i++) {
-      if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
-        posX = (i%4)*dimCuadro + desplazamientoX*dimCuadro + 250;
-        posY = ((i/4)|0) * dimCuadro + desplazamientoY*dimCuadro;
-        square(posX, posY, dimCuadro);
+
+    for (int j = 4; j < 8; j++) {
+      if (tablero.get(1)[j] != 0) {
+        ultimaPieza = true;
+      }
+    }
+
+    if (ultimaPieza) {
+      for (int i = 0; i <= 15; i++) {
+        if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
+          posX = (i%4)*dimCuadro + desplazamientoX*dimCuadro + 250;
+          posY = ((i/4)|0) * dimCuadro + desplazamientoY*dimCuadro - 40;
+          square(posX, posY, dimCuadro);
+        }
+      }
+    } else {
+      for (int i = 0; i <= 15; i++) {
+        if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
+          posX = (i%4)*dimCuadro + desplazamientoX*dimCuadro + 250;
+          posY = ((i/4)|0) * dimCuadro + desplazamientoY*dimCuadro;
+          square(posX, posY, dimCuadro);
+        }
       }
     }
     pop();
@@ -1106,6 +1109,7 @@ void nextTetromino(int numero) {
   numFigura = numFiguraSig;
   numFiguraSig = (int) random (7);
   tRotation = 0;
+  pRotation = 3;
   desplazamientoX = 4;
   desplazamientoY = 0;
 }
@@ -1122,19 +1126,31 @@ void yMovement() {
 //Funcion para eliminar filas que se encuentran completas
 
 void deleteCompleteRows() {
-
   for (int i = rows - 2; i >= 0; i--) {
     int j = 0;
     for (j = 1; j < 11 && tablero.get(i)[j] != 0; j++) {
     }
     if (j == 11) {
-      tablero.remove(i);
-      tablero.add(0, new color[columns]);
-      tablero.get(0)[0] = backColor;
-      tablero.get(0)[columns-1] = backColor;
-      puntaje = puntaje + (100*nivel);
-      eliminatedRows +=1;
+      filasLlenas[filasAEliminar] = i;
+      filasAEliminar += 1;
     }
+  }
+
+  for (int k=0; k<4 && (filasLlenas[k]!=20); k++) {
+    tablero.remove(filasLlenas[k]);
+    puntaje = puntaje + (100*nivel);
+    eliminatedRows +=1;
+  }
+
+  for (int k=0; k<4 && (filasLlenas[k]!=20); k++) {
+    tablero.add(0, new color[columns]);
+    tablero.get(0)[0] = backColor;
+    tablero.get(0)[columns-1] = backColor;
+  }
+
+  filasAEliminar = 0;
+  for (int r=0; r<4; r++) {
+    filasLlenas[r] = 20;
   }
 }
 
@@ -1162,6 +1178,7 @@ void restart() {
   numFigura = (int) random (7);
   numFiguraSig = (int) random (7);
   tRotation = 0;
+  pRotation = 3;
   desplazamientoX = 4;
   desplazamientoY = 0;
   puntaje = 0;
