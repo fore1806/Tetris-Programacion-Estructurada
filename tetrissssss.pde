@@ -9,6 +9,7 @@ boolean screenGame = false;
 boolean screenPause = false;
 boolean screenGameOver = false;
 boolean screenRestart = false;
+boolean puntajeAdicional = true;
 
 boolean ultimaPieza = false;
 
@@ -69,13 +70,8 @@ final int originalButtonY = 450;
 final int dimLevelButton = 100;
 
 final int levelButtonX1 = 180;
-final int levelButtonX2 = 310;
-final int levelButtonX3 = 440;
-final int levelButtonX4 = 570;
-final int levelButtonX5 = 700;
 
 final int levelButtonY1 = 150;
-final int levelButtonY2 = 280;
 
 //Pantalla restart
 
@@ -191,7 +187,7 @@ final int howButtonY2 = 460;  //Coordenada en y del boton como jugar de la panta
 final int inicioButtonY = 660;  //Coordenada en y del boton inicio de la pantalla de pausa
 
 
-final int restartButtonY2 = 460;
+final int restartButtonY2 = 550;
 
 //Eliminacion de filas
 
@@ -224,6 +220,8 @@ void setup() {
 
 
 void draw() {
+
+
 
   //Cuando se debe mostrar la pantalla inicial
   if (screenInicial) {
@@ -267,7 +265,7 @@ void draw() {
     screenRestartGame();
   }
 
-  println(puntaje, nivel, eliminatedRows, intervalo);
+  //println(puntaje, nivel, eliminatedRows, intervalo);
 }
 
 
@@ -395,7 +393,7 @@ void mousePressed() {
       screenGameOver = false;
       restart();
     } else if ((mouseX > buttonX) && (mouseX < buttonX + buttonW) && 
-      (mouseY > inicioButtonY) && (mouseY < inicioButtonY + buttonH)) {
+      (mouseY > inicioButtonY + 50) && (mouseY < inicioButtonY + buttonH + 50)) {
       //Cambiamos el estado de las pantallas
       screenInicial = true;
       screenGameOver = false;
@@ -431,11 +429,22 @@ void keyPressed() {
 
   if (screenGame) {
     if (keyCode == 65 || keyCode == 37) {
-      if (!leftKnock(numFigura)) desplazamientoX--;
+      if (!leftKnock(numFigura)) {
+        desplazamientoX--;
+      }
     } else if (keyCode == 68 || keyCode == 39) {
-      if (!rightKnock(numFigura)) desplazamientoX++;
+      if (!rightKnock(numFigura)) {
+        desplazamientoX++;
+      }
     } else if (keyCode == 83 || keyCode == 40) {
-      if (!downKnock(numFigura)) desplazamientoY++;
+      if (!downKnock(numFigura)) {
+        desplazamientoY++;
+      }
+      
+      if(puntajeAdicional){
+      puntaje += (nivel*3) -1;
+      puntajeAdicional = false;
+    }
     } else if (key == 'p' || key == 'P') {
       screenPause = true;
       screenGame = false;
@@ -829,8 +838,9 @@ void gameOverSreen() {
 
   push();
   fill(bColor);
+  rect(buttonX, restartButtonY2-50 - buttonH,buttonW, buttonH, redondeo);
   rect(buttonX, restartButtonY2, buttonW, buttonH, redondeo); //Boton de restart, reutilizamos la variable de altura de How2
-  rect(buttonX, inicioButtonY, buttonW, buttonH, redondeo);
+  rect(buttonX, inicioButtonY + 50, buttonW, buttonH, redondeo);
   pop();
 
   image(gameOverImagen, 20, 20, 940, 330);
@@ -844,8 +854,12 @@ void gameOverSreen() {
   textSize(80);
   textAlign(CENTER, CENTER);
   fill(backColor);
-  text("RESTART", buttonX + buttonW/2, howButtonY2+buttonH/2);
-  text("INICIO", buttonX + buttonW/2, inicioButtonY+buttonH/2);
+  text("RESTART", buttonX + buttonW/2, restartButtonY2 +buttonH/2);
+  text("INICIO", buttonX + buttonW/2, inicioButtonY + 50 +buttonH/2);
+  text("Score Final:", buttonX + buttonW/4 + 60, restartButtonY2-50- buttonH+buttonH/2);
+  
+  textSize(40);
+  text(puntaje, buttonX + buttonW*3/4 + 35, restartButtonY2-50- buttonH+buttonH/2);
   pop();
 }
 
@@ -893,7 +907,7 @@ void drawTetromino(int numero, int siMovimiento) {
 
   //Definimos el color aqui, para no tener que definirlo posteriormente a la hora de guardar
   colorTetromino =tetrominoColor[numero]; 
-  
+
 
   if (siMovimiento ==1) {
     push();
@@ -1063,39 +1077,35 @@ boolean rightKnock(int numero) {
 //Choque a la abajo
 
 boolean downKnock(int numero) {
-  if(ultimaPieza){
+  if (ultimaPieza) {
     for (int i = 0; i < 16; i ++) {
-    if ((arrayTetrominos[numero][tRotation] & (1 << i)) != 0) {
-      posColisionX = ((15-i)%4) + desplazamientoX;
-      posColisionY = (((15-i)/4)|0) + desplazamientoY -40;
-      if ((tablero.get(posColisionY+1+40)[posColisionX] != 0)&&(tablero.get(posColisionY+40)[posColisionX] != 0)) {
-        if (!screenGameOver) {
-          nextTetromino(numFigura);
+      if ((arrayTetrominos[numero][tRotation] & (1 << i)) != 0) {
+        posColisionX = ((15-i)%4) + desplazamientoX;
+        posColisionY = (((15-i)/4)|0) + desplazamientoY -40;
+        if ((tablero.get(posColisionY+1+40)[posColisionX] != 0)&&(tablero.get(posColisionY+40)[posColisionX] != 0)) {
+          if (!screenGameOver) {
+            nextTetromino(numFigura);
+          }
+          return true;
         }
-        return true;
       }
     }
-  }
-  return false;
-  }
-  
-  else{
+    return false;
+  } else {
     for (int i = 0; i < 16; i ++) {
-    if ((arrayTetrominos[numero][tRotation] & (1 << i)) != 0) {
-      posColisionX = ((15-i)%4) + desplazamientoX;
-      posColisionY = (((15-i)/4)|0) + desplazamientoY;
-      if (tablero.get(posColisionY+1)[posColisionX] != 0) {
-        if (!screenGameOver) {
-          nextTetromino(numFigura);
+      if ((arrayTetrominos[numero][tRotation] & (1 << i)) != 0) {
+        posColisionX = ((15-i)%4) + desplazamientoX;
+        posColisionY = (((15-i)/4)|0) + desplazamientoY;
+        if (tablero.get(posColisionY+1)[posColisionX] != 0) {
+          if (!screenGameOver) {
+            nextTetromino(numFigura);
+          }
+          return true;
         }
-        return true;
       }
     }
+    return false;
   }
-  return false;
-  }
-  
-  
 }
 
 
@@ -1119,24 +1129,24 @@ boolean rotationKnock(int numero) {
 void nextTetromino(int numero) {
   //int posColisionX;
   //int posColisionY;
-  if(ultimaPieza){
+  if (ultimaPieza) {
     for (int i = 0; i <= 15; i++) {
-    if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
-      posColisionX = (i%4) + desplazamientoX;
-      posColisionY = ((i/4)|0) + desplazamientoY - 1;
-      if(posColisionY>=0){
-      tablero.get(posColisionY)[posColisionX] = colorTetromino;
+      if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
+        posColisionX = (i%4) + desplazamientoX;
+        posColisionY = ((i/4)|0) + desplazamientoY - 1;
+        if (posColisionY>=0) {
+          tablero.get(posColisionY)[posColisionX] = colorTetromino;
+        }
       }
     }
-  }
-  }else{
-  for (int i = 0; i <= 15; i++) {
-    if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
-      posColisionX = (i%4) + desplazamientoX;
-      posColisionY = ((i/4)|0) + desplazamientoY;
-      tablero.get(posColisionY)[posColisionX] = colorTetromino;
+  } else {
+    for (int i = 0; i <= 15; i++) {
+      if ((arrayTetrominos[numero][tRotation] & (1 << 15 - i)) != 0) {
+        posColisionX = (i%4) + desplazamientoX;
+        posColisionY = ((i/4)|0) + desplazamientoY;
+        tablero.get(posColisionY)[posColisionX] = colorTetromino;
+      }
     }
-  }
   }
 
   numFigura = numFiguraSig;
@@ -1145,6 +1155,7 @@ void nextTetromino(int numero) {
   pRotation = 3;
   desplazamientoX = 4;
   desplazamientoY = 0;
+  puntajeAdicional = true;
 }
 
 //Funcion para el movimiento en la vertical
@@ -1169,9 +1180,11 @@ void deleteCompleteRows() {
     }
   }
 
+  println(filasLlenas);
+
   for (int k=0; k<4 && (filasLlenas[k]!=20); k++) {
     tablero.remove(filasLlenas[k]);
-    puntaje = puntaje + (100*nivel);
+    puntaje = puntaje + (95*nivel) - (nivel*2);
     eliminatedRows +=1;
   }
 
