@@ -101,20 +101,12 @@ ArrayList<color[]> tablero = new ArrayList<color[]>();
 //Definimos el ancho de cada cuadrado
 final int dimCuadro = 40;
 
-//Representacion en numero binario de cada tetromino junto con sus rotaciones
-final int [] I = {3840, 17476, 61440, 17476};  //Figura I
-final int [] L = {59392, 50240, 11776, 35008};  //Figura L
-final int [] S = {27648, 35904, 27648, 35904};  //Figura S
-final int [] Z = {50688, 19584, 50688, 19584};  //Figura Z
-final int [] J = {57856, 17600, 36352, 51328};  //Figura J
-final int [] O = {26112, 26112, 26112, 26112};  //Figura O
-final int [] T = {58368, 19520, 19968, 35968};  //Figura T
 
 //Valores importantes para la representacion
 
 // Matriz en la que almacenamos los valores binarios de cada rotacion de los tetrominos
 
-final int [][] arrayTetrominos = {{3840, 17476, 61440, 17476}, // Valores Binarios de las Rotaciones de la Figura I
+final int [][] arrayTetrominos = {{61440, 17476, 61440, 17476}, // Valores Binarios de las Rotaciones de la Figura I
   {59392, 50240, 11776, 35008}, // Valores Binarios de las Rotaciones de la Figura L
   {27648, 35904, 27648, 35904}, // Valores Binarios de las Rotaciones de la Figura S
   {50688, 19584, 50688, 19584}, // Valores Binarios de las Rotaciones de la Figura z
@@ -641,14 +633,14 @@ void howToPlayScreen() {
   text("¿CÓMO JUGAR?", width/2, 80);
 
   //Cuerpo
-  textSize(40);
-  text("Para mover el tetromino puedes", width/2, 200);
-  text("utilizar las letras A, S, D", width/2, 260);
-  text("O las flechas de tu teclado.", width/2, 320);
-  text("Si deseas rotar tu tetromino", width/2, 380);
-  text("utiliza la tecla W o la tecla O", width/2, 440);
-  text("Si deseas pausar el juego", width/2, 500);
-  text("oprime la tecla P", width/2, 560);
+  textSize(35);
+  text("Para mover el tetromino puedes utilizar las letras", width/2, 200);
+  text("A, S, D o las flechas de tu teclado. Si deseas rotar", width/2, 260);
+  text("tu tetromino utiliza la tecla W o la tecla O. Si ", width/2, 320);
+  text("deseas pausar el juego oprime la tecla P. Que tambien", width/2, 380);
+  text("puedes utilizar para jugar desde diferentes pantallas.", width/2, 440);
+  text("Otros atajos de teclado son la tecla B para volver ", width/2, 500);
+  text("a la pantalla anterior o R para ir a la pantalla de restart.", width/2, 560);
   pop();
 
   push();
@@ -952,11 +944,11 @@ void screenPuntajes(){
   text("High Scores", width/2, 80);
   for (int i=0; i<10; i++){
     textSize(50);
-    text(highScores[i],  width/2, 200 + 50*i);
+    text(highScores[i],  width/2, 190 + 50*i);
   }
   
-  text("Tu puntaje fue:", width/2, 700);
-  text(puntaje, width/2, 760);
+  text("Tu puntaje fue:", width/2, 720);
+  text(puntaje, width/2, 780);
   pop();
 }
 
