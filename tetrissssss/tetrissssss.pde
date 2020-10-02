@@ -10,6 +10,7 @@ boolean screenPause = false;
 boolean screenGameOver = false;
 boolean screenRestart = false;
 boolean screenPuntajes = false;
+boolean nuevoPuntaje = true;
 
 
 boolean ultimaPieza = false;
@@ -953,8 +954,9 @@ void screenPuntajes(){
 }
 
 void puntajeSuperior(){
-    if(puntaje>highScores[9]){
+    if(puntaje>highScores[9] && nuevoPuntaje){
       highScores[9] = puntaje;
+      nuevoPuntaje = false;
     }
     
     highScores = sort(highScores);
@@ -1294,6 +1296,7 @@ void restart() {
   puntaje = 0;
   eliminatedRows = 0;
   ultimaPieza = false;
+  nuevoPuntaje = true;
 }
 
 //Funcion para saber si el jugador perdio
