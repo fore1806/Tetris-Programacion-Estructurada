@@ -68,3 +68,60 @@ Los atajos de teclado para ambas pantallas (Selección de Niveles y Colores) se 
 |-----|----------------------------------------------------------------|
 |  P  |Te lleva al juego con las configuraciones realizadas            |
 |  B  |Te lleva a la pantalla de configuración                         |
+
+### Pantalla de Juego:
+
+![](images/pantallaJuego.JPG)
+
+Aquí es donde sucede el juego, en esta pantalla se observa el puntaje, nivel y el siguiente tetromino del juego. Para jugar se utilizan los siguientes comandos
+
+| Tecla |                               Atajo                            |
+|-----  |----------------------------------------------------------------|
+| S-Down|Mueve el tetromino una posición hacia abajo                     |
+| A-Left|Mueve el tetromino una posición a la izquierda                  |
+|D-Right|Mueve el tetromino una posición a la derecha                    |
+|  W-O  |Hace que el tetromino haga una rotación en sentido horario      |
+|   P   |Te lleva al menú de Pausa                                       |
+
+#### Menú de Pausa
+
+![](images/pantallaPausa.JPG)
+
+En el manú de Pausa se pueden hacer diferentes cosas desde seguir jugando, pasando por recomenzar el juego y hasata ir a la pantalla de inicio. Para estas funcionalidades contamos con diferentes atajos de teclado.
+
+|Tecla|                               Atajo                            |
+|-----|----------------------------------------------------------------|
+|  P  |Te permite continuar con la partida actual                      |
+|  R  |Te permite comenzar una nueva partida                           |
+|  H  |Te lleva a la pantalla de Como Jugar                            |
+|  I  |Te lleva a la pantalla de Inicio                                |
+
+### Pantalla de Game Over
+
+![](images/pantallaGameOver.JPG)
+
+Esta pantalla solo se muestra una vez has perdido, en ella se observa tu puntaje y otras opciones a las que se puede acceder con el mouse o con tu teclado de la siguiente forma
+
+|Tecla|                               Atajo                            |
+|-----|----------------------------------------------------------------|
+|  S  |Puedes consultar los puntajes más altos del juego               |
+|  R  |Te lleva a la pantalla de volver a jugar                        |
+|  I  |Te lleva a la pantalla de Inicio                                |
+
+#### Pantalla de Mejores Puntajes
+
+![](images/pantallaPuntaje.JPG)
+
+A esta pantalla se puede acceder haciendo click sobre el puntaje obtenido una vez has perdido el juego, o utilizando la tecla S mencionado anteriormente. En esta pantalla se presentan los mejores puntajes obtenidos en el juego durante una sesión. Para seguir jugando u otras funcionalidades se deben utilizar los siguientes atajos de teclado.
+
+|Tecla|                               Atajo                            |
+|-----|----------------------------------------------------------------|
+|  B  |Te permite volver a la pantalla anterior (pantalla de Game Over)|
+|  R  |Te lleva a la pantalla de volver a jugar                        |
+|  I  |Te lleva a la pantalla de Inicio                                |
+
+#### Pantalla de Volver a Jugar
+
+![](images/pantallaRestart.JPG)
+
+Esta pantalla te da la opción de volver a jugar en el nivel en el que perdiste durante la partida inmediatamente anterior, o volver a comenzar desde el nivel 1. Para acceder a estas opciones debes utilizar el mouse.
