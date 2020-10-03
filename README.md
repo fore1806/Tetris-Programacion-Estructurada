@@ -9,6 +9,10 @@ En el presente proyecto se pretende realizar el repaso de programación estructu
 
 Repasar los conceptos básicos de la programación estructurada al implementar el juego del tetris.
 
+## Implementación:
+
+Para el desarrollo del juego del tetris, se utilizaron los conceptos de la programación estructurada, teniendo vital importancia el uso de bitwise para el desarrollo de las colisiones de los tetrominos y de su diagramación. Para la representación del tablero se utilizó un arreglo dinámico. En el desarrollo de la interfaz gráfica, fue indispensable el uso de variables de tipo booleanas y el desarrollo de diversos métodos que incluyen el uso de condicionales, ciclos y la API de Processing.
+
 ## Instrucciones de Juego:
 
 Al iniciar el proyecto encontraras diferentes configuraciones, a continuación una pequeña guía para que te diviertas al maximo con el juego de tetris.
