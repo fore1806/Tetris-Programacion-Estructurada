@@ -1,5 +1,6 @@
 # :large_orange_diamond: Juego de Tetris :large_orange_diamond:
 Autor: Andrés Felipe Forero Salas
+
 GitHub nickname: [fore1806](https://github.com/fore1806) 
 
 En el presente proyecto se pretende realizar el repaso de programación estructurada para la materia de Programación Orientada a Objetos, mediante el desarrollo del juego de tetris con el bitwise.
@@ -14,4 +15,13 @@ Al iniciar el proyecto encontraras diferentes configuraciones, a continuación u
 
 ### Pantalla de Inicio:
 
-<img src = "images/pantalla-Inicio.JPG" widht = "20">
+![](images/pantalla-Inicio.JPG)
+
+En esta pantalla puedes utilizar tu mouse para ir a las diferentes funcionalidades, ademas puedes utilizar tu teclado para ir a otras funcionalidades
+
+|Tecla|                               Atajo                            |
+-----------------------------------------------------------------------
+|  P  |Te lleva directamente al juego con las configuraciones iniciales|
+|  H  |Te lleva a la pantalla de como jugar                            |
+|  C  |Te lleva a la pantalla de Configuración                         |
+------------------------------------------------------------------------
