@@ -212,6 +212,7 @@ void setup() {
   for (int k = 0; k < rows; k++) {
     tablero.add(new color[columns]);
   }
+
   setupTablero();
 
   llenarRandomColors();
@@ -261,15 +262,15 @@ void draw() {
   else if (screenGameOver) {
     gameOverSreen();
   } 
-  
+
   //Cuando se debe mostrar ña pantalla de Restart
   else if (screenRestart) {
     screenRestartGame();
   }
 
-  
+
   //Cuando se debe mostar la pantalla de puntajes
-  else if (screenPuntajes){
+  else if (screenPuntajes) {
     screenPuntajes();
   }
   println(puntaje, nivel, eliminatedRows, intervalo);
@@ -340,11 +341,11 @@ void mousePressed() {
       intervalo = 1000;
       tetrominoColor[0] = #1EE1D4; 
       tetrominoColor[1] = #EE9709; 
-      tetrominoColor[2] =#35C067;
+      tetrominoColor[2] = #35C067;
       tetrominoColor[3] = #B81A16; 
       tetrominoColor[4] = #26339A; 
       tetrominoColor[5] = #F7F619;
-      tetrominoColor[6] =#B056E7;
+      tetrominoColor[6] = #B056E7;
     }
   } else if (screenColores) {
     colorSeleccionado();
@@ -453,12 +454,11 @@ void keyPressed() {
         desplazamientoY++;
       }
 
-        if (nivel<=5) {
-          puntaje += 1;
-        } else {
-          puntaje += 3;
-        }      
-      
+      if (nivel<=5) {
+        puntaje += 1;
+      } else {
+        puntaje += 3;
+      }
     } else if (key == 'p' || key == 'P') {
       screenPause = true;
       screenGame = false;
@@ -567,7 +567,7 @@ void keyPressed() {
       screenGameOver = false;
       screenPuntajes = true;
     }
-  }else if (screenPuntajes){
+  } else if (screenPuntajes) {
     if (key == 'r' || key == 'R') {
       screenPuntajes = false;
       screenRestart = true;
@@ -890,10 +890,8 @@ void gameOverSreen() {
   textSize(40);
   text(puntaje, buttonX + buttonW*3/4 + 35, restartButtonY2-50- buttonH+buttonH/2);
   pop();
-  
+
   puntajeSuperior();
-  
-  
 }
 
 //Pantalla de Restart
@@ -933,8 +931,8 @@ void screenRestartGame() {
 
 //Pantalla de Puntajes
 
-void screenPuntajes(){
-  
+void screenPuntajes() {
+
   background(backColor);
   push();
   textFont(fuente);
@@ -943,25 +941,24 @@ void screenPuntajes(){
   //Titulo
   textSize(80);
   text("High Scores", width/2, 80);
-  for (int i=0; i<10; i++){
+  for (int i=0; i<10; i++) {
     textSize(50);
-    text(highScores[i],  width/2, 190 + 50*i);
+    text(highScores[i], width/2, 190 + 50*i);
   }
-  
+
   text("Tu puntaje fue:", width/2, 720);
   text(puntaje, width/2, 780);
   pop();
 }
 
-void puntajeSuperior(){
-    if(puntaje>highScores[9] && nuevoPuntaje){
-      highScores[9] = puntaje;
-      nuevoPuntaje = false;
-    }
-    
-    highScores = sort(highScores);
-    highScores = reverse(highScores);
-    
+void puntajeSuperior() {
+  if (puntaje>highScores[9] && nuevoPuntaje) {
+    highScores[9] = puntaje;
+    nuevoPuntaje = false;
+  }
+
+  highScores = sort(highScores);
+  highScores = reverse(highScores);
 }
 
 
@@ -1221,7 +1218,6 @@ void nextTetromino(int numero) {
   pRotation = 3;
   desplazamientoX = 4;
   desplazamientoY = 0;
-  
 }
 
 //Funcion para el movimiento en la vertical
