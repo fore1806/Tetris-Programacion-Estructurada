@@ -20,8 +20,8 @@ Al iniciar el proyecto encontraras diferentes configuraciones, a continuación u
 En esta pantalla puedes utilizar tu mouse para ir a las diferentes funcionalidades, ademas puedes utilizar tu teclado para ir a otras funcionalidades
 
 |Tecla|                               Atajo                            |
------------------------------------------------------------------------
+|-----|----------------------------------------------------------------|
 |  P  |Te lleva directamente al juego con las configuraciones iniciales|
 |  H  |Te lleva a la pantalla de como jugar                            |
 |  C  |Te lleva a la pantalla de Configuración                         |
-------------------------------------------------------------------------
+
