@@ -14,4 +14,4 @@ Al iniciar el proyecto encontraras diferentes configuraciones, a continuación u
 
 ### Pantalla de Inicio:
 
-![](images/pantalla-Inicio.JPG "Pantalla de Inicio")
+<img src = "images/pantalla-Inicio.JPG" widht = "100">
