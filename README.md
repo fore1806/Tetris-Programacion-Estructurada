@@ -14,4 +14,4 @@ Al iniciar el proyecto encontraras diferentes configuraciones, a continuación u
 
 ### Pantalla de Inicio:
 
-![Pantalla de Inicio](/Tetris-Programacion-Estructurada/tetrissssss/pantalla-inicio.jpg "Pantalla de Inicio")
+![](images/pantalla-Inicio.JPG "Pantalla de Inicio")
