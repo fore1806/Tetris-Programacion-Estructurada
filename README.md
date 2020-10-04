@@ -1,12 +1,8 @@
 # :large_orange_diamond: Juego de Tetris :large_orange_diamond:
 Autor: Andrés Felipe Forero Salas
-
 GitHub nickname: [fore1806](https://github.com/fore1806) 
-
 Programación Orientada a Objetos
-
 Universidad Nacional de Colombia
-
 Sede Bogotá
 
 En el presente proyecto se pretende realizar un repaso de programación estructurada para la materia de Programación Orientada a Objetos, mediante el desarrollo de un juego de tetris en processing.
