@@ -3,6 +3,12 @@ Autor: Andrés Felipe Forero Salas
 
 GitHub nickname: [fore1806](https://github.com/fore1806) 
 
+Programación Orientada a Objetos
+
+Universidad Nacional de Colombia
+
+Sede Bogotá
+
 En el presente proyecto se pretende realizar un repaso de programación estructurada para la materia de Programación Orientada a Objetos, mediante el desarrollo de un juego de tetris en processing.
 
 ## Objetivo:
@@ -17,7 +23,7 @@ Para el desarrollo de este juego de tetris, se utilizaron los conceptos de la pr
 
 - Mediante el desarrollo de este proyecto se evidenció la importancia y utilidad de trabajar con las operaciones bitwise, como una representación de diferentes elementos en el desarrollo de un proyecto en programación estructurada.
 
-- Se evidenció que la programación estructurada es un buen paradigma a la hora de desarrollar diversos proyectos, sin embargo, podría no ser el paradigma de programación más eficiente si a longitud y legibilidad del código nos referimos.
+- Se evidenció que la programación estructurada es un buen paradigma a la hora de desarrollar diversos proyectos, sin embargo, el conocer diversos paradigmas de programación nos permite como programadores evaluar, cual nos ayuda a resolver de mejor manera un problema. Por lo que es el momento de comenzar a aprender el paradigma de Programación Orientada a Objetos (POO) y así como programadores tener más opciones a la hora de desarrollar un proyecto.
 
 ## Instrucciones de Juego:
 
