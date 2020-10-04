@@ -1210,7 +1210,7 @@ void deleteCompleteRows() {
 
   for (int k=0; k<4 && (filasLlenas[k]!=20); k++) {  //Eliminamos todas las filas completas
     tablero.remove(filasLlenas[k]);
-    puntaje = puntaje + (95*nivel) - (nivel*2);
+    puntaje = puntaje + (85*nivel) - nivel + (filasAEliminar*15);
     eliminatedRows +=1;
   }
 

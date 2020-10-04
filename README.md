@@ -3,7 +3,7 @@ Autor: Andrés Felipe Forero Salas
 
 GitHub nickname: [fore1806](https://github.com/fore1806) 
 
-En el presente proyecto se pretende realizar el repaso de programación estructurada para la materia de Programación Orientada a Objetos, mediante el desarrollo del juego de tetris con el bitwise.
+En el presente proyecto se pretende realizar un repaso de programación estructurada para la materia de Programación Orientada a Objetos, mediante el desarrollo de un juego de tetris en processing.
 
 ## Objetivo:
 
@@ -11,17 +11,23 @@ Repasar los conceptos básicos de la programación estructurada al implementar e
 
 ## Implementación:
 
-Para el desarrollo del juego del tetris, se utilizaron los conceptos de la programación estructurada, teniendo vital importancia el uso de bitwise para el desarrollo de las colisiones de los tetrominos y de su diagramación. Para la representación del tablero se utilizó un arreglo dinámico. En el desarrollo de la interfaz gráfica, fue indispensable el uso de variables de tipo booleanas y el desarrollo de diversos métodos que incluyen el uso de condicionales, ciclos y la API de Processing.
+Para el desarrollo de este juego de tetris, se utilizaron los conceptos de la programación estructurada, teniendo vital importancia el uso de operaciones de bitwise para la diagramación de los tetrominos y la evaluación de las colisiones de los mismos. Para la representación del tablero se utilizó un arreglo dinámico que permitiera realizar de manera facil el almacenamiento de los tetrominos que ya han caido, así como la evaluación y eliminación de filas que se encuentren completas. En el desarrollo de la interfaz gráfica, fue indispensable el uso de variables de tipo booleanas y el desarrollo de diversos métodos que incluyen el uso de condicionales, ciclos y las funciones predeterminadas de la API de Processing.
+
+## Conclusiones:
+
+- Mediante el desarrollo de este proyecto se evidenció la importancia y utilidad de trabajar con las operaciones bitwise, como una representación de diferentes elementos en el desarrollo de un proyecto en programación estructurada.
+
+- Se evidenció que la programación estructurada es un buen paradigma a la hora de desarrollar diversos proyectos, sin embargo, podría no ser el paradigma de programación más eficiente si a longitud y legibilidad del código nos referimos.
 
 ## Instrucciones de Juego:
 
-Al iniciar el proyecto encontraras diferentes configuraciones, a continuación una pequeña guía para que te diviertas al maximo con el juego de tetris.
+A continuación se presenta una pequeña guía de como jugar este Tetris, con la lectura de estas instrucciones conocerás los principales comandos de teclado que serán útiles a la hora de jugar. 
 
 ### Pantalla de Inicio:
 
 ![](images/pantalla-Inicio.JPG)
 
-En esta pantalla puedes utilizar tu mouse para ir a las diferentes funcionalidades, ademas puedes utilizar tu teclado para ir a otras funcionalidades
+Esta es la pantalla inicial del juego, aquí puedes utilizar tu mouse para navegar entre las diferentes funcionalidades del proyecto, además puedes utilizar tu teclado para acceder a diferentes pantallas.
 
 |Tecla|                               Atajo                            |
 |-----|----------------------------------------------------------------|
@@ -33,7 +39,7 @@ En esta pantalla puedes utilizar tu mouse para ir a las diferentes funcionalidad
 
 ![](images/pantallaHow.JPG)
 
-En esta pantalla se encuentran unas instrucciones básicas para poder jugar Tetris. Para navegar entre pantallas puede utilizar el mouse o los siguientes atajos de teclado.
+En esta pantalla se encuentran unas instrucciones básicas para poder jugar Tetris. Para navegar entre pantallas se puede utilizar el mouse o los siguientes atajos de teclado.
 
 |Tecla|                               Atajo                            |
 |-----|----------------------------------------------------------------|
@@ -44,13 +50,13 @@ En esta pantalla se encuentran unas instrucciones básicas para poder jugar Tetr
 
 ![](images/pantallaConf.JPG)
 
-En esta pantalla puedes realizar la configuración inicial del juego, es decir, los colores de los tetrominos, y el nivel inicial del juego. Estas tareas se pueden realizar con el mouse o con las teclas, mencionadas a continuación.
+En esta pantalla puedes modificar la configuración inicial del juego, es decir, los colores de los tetrominos, y el nivel inicial del Tetris. Estas tareas se pueden realizar con el mouse o con las teclas, mencionadas a continuación.
 
 |Tecla|                               Atajo                            |
 |-----|----------------------------------------------------------------|
 |  N  |Te lleva a la pantalla de selección de Niveles                  |
 |  C  |Te lleva a la pantalla de selección de Colores                  |
-|  I  |Define las configuraciones iniciales de colores y nivel         |
+|  I  |Reestablece las configuraciones iniciales de colores y nivel    |
 |  P  |Te lleva directamente al juego con la configuración determinada |
 |  B  |Te lleva a la pantalla de inicio                                |
 
@@ -58,7 +64,7 @@ En esta pantalla puedes realizar la configuración inicial del juego, es decir, 
 
 ![](images/pantallaNivel.JPG)
 
-En esta pantalla seleccionas el nivel en el que comienza el juego, que definira la velocidad con la que bajan los tetrominos, y la ponderación que tendra el eliminar filas. Para seleccionar el nivel debes utilizar el mouse.
+En esta pantalla seleccionas el nivel en el que comienza el juego, que definirá la velocidad con la que bajan los tetrominos, y la ponderación que tendra el eliminar las filas que se encuentran completamente llenas. Para seleccionar el nivel debes utilizar el mouse.
 
 #### Pantalla de Selección de Colores
 
@@ -77,7 +83,7 @@ Los atajos de teclado para ambas pantallas (Selección de Niveles y Colores) se 
 
 ![](images/pantallaJuego.JPG)
 
-Aquí es donde sucede el juego, en esta pantalla se observa el puntaje, nivel y el siguiente tetromino del juego. Para jugar se utilizan los siguientes comandos
+En esta pantalla el juego tiene lugar, en ella se observan el puntaje, nivel y el siguiente tetromino de la partida actual. Para jugar se utilizan los siguientes comandos
 
 | Tecla |                               Atajo                            |
 |-----  |----------------------------------------------------------------|
@@ -91,12 +97,12 @@ Aquí es donde sucede el juego, en esta pantalla se observa el puntaje, nivel y 
 
 ![](images/pantallaPausa.JPG)
 
-En el manú de Pausa se pueden hacer diferentes cosas desde seguir jugando, pasando por recomenzar el juego y hasata ir a la pantalla de inicio. Para estas funcionalidades contamos con diferentes atajos de teclado.
+En el menú de Pausa se pueden realizar diferentes tareas, desde seguir jugando, pasando por recomenzar el juego y hasata ir a la pantalla de inicio. Para estas funcionalidades contamos con diferentes atajos de teclado.
 
 |Tecla|                               Atajo                            |
 |-----|----------------------------------------------------------------|
 |  P  |Te permite continuar con la partida actual                      |
-|  R  |Te permite comenzar una nueva partida                           |
+|  R  |Te lleva a la pantalla de una nueva partida                     |
 |  H  |Te lleva a la pantalla de Como Jugar                            |
 |  I  |Te lleva a la pantalla de Inicio                                |
 
@@ -116,7 +122,7 @@ Esta pantalla solo se muestra una vez has perdido, en ella se observa tu puntaje
 
 ![](images/pantallaPuntaje.JPG)
 
-A esta pantalla se puede acceder haciendo click sobre el puntaje obtenido una vez has perdido el juego, o utilizando la tecla S mencionado anteriormente. En esta pantalla se presentan los mejores puntajes obtenidos en el juego durante una sesión. Para seguir jugando u otras funcionalidades se deben utilizar los siguientes atajos de teclado.
+A esta pantalla se puede acceder haciendo click sobre el puntaje obtenido una vez has perdido el juego, o utilizando la tecla S como se mencionó anteriormente. En esta pantalla se presentan los mejores puntajes obtenidos en el juego durante una sesión. Para seguir jugando o hacer uso de otras funcionalidades se deben utilizar los siguientes atajos de teclado.
 
 |Tecla|                               Atajo                            |
 |-----|----------------------------------------------------------------|
@@ -128,4 +134,7 @@ A esta pantalla se puede acceder haciendo click sobre el puntaje obtenido una ve
 
 ![](images/pantallaRestart.JPG)
 
-Esta pantalla te da la opción de volver a jugar en el nivel en el que perdiste durante la partida inmediatamente anterior, o volver a comenzar desde el nivel 1. Para acceder a estas opciones debes utilizar el mouse.
+Esta pantalla te da la opción de volver a jugar en el nivel en el que perdiste durante la partida inmediatamente anterior, o volver a comenzar desde el nivel 1. Para acceder a estas opciones debes utilizar el mouse de tu computador.
+
+
+Diviertete al máximo con mi juego :smiley: :v: :sunglasses:
