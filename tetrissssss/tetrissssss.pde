@@ -12,6 +12,8 @@ boolean screenPause = false;
 boolean screenGameOver = false;
 boolean screenRestart = false;
 boolean screenPuntajes = false;
+
+//Booleano para agregar el puntaje actual
 boolean nuevoPuntaje = true;
 
 //Booleano para cuando el tablero tiene fichas en la penultima fila
@@ -27,7 +29,7 @@ PImage gameOverImagen;//Imagen del game Over
 PFont fuenteTexto;  //Creamos una variable para almacenar una fuenta que introducimos en el proyecto mas adelante
 
 final int redondeo = 7; //redondeo de botones
-final int backColor = 20; //Color de fondo del juego en RGB
+final color backColor = 20; //Color de fondo del juego en RGB
 final color bColor = #E4E0E0;  //Color gris del tablero
 
 
@@ -119,8 +121,8 @@ final int [][] arrayTetrominos = {{61440, 17476, 61440, 17476}, // Valores Binar
   {58368, 19520, 19968, 35968}};// Valores Binarios de las Rotaciones de la Figura T
 
 //Variables para selección del tetromino a representar
-int numTetromino = (int)random (7);  //Esta variable nos dira cual tetromino pintar despues
-int numNextTetromino = (int)random (7);  //Esta variable nos dira cual tetromino pintar antes
+int numTetromino = (int)random (7);  //Esta variable nos dira cual tetromino pintar en el tablero en movimiento
+int numNextTetromino = (int)random (7);  //Esta variable nos dira cual tetromino pintar cuando el tetromino se haya posicionado
 
 // Definimos la rotacion inicial en el inicio del array
 int tRotation = 0;
@@ -145,7 +147,7 @@ color colorTetromino;  //Esta variable nos determinara el color del tetromino a 
 //Tiempo y eliminación de filas llenas
 int timer;  //Tiempo 
 int intervalo = 1000;  //Nos dice la velocidad con la que baja la pieza, la utilizamos dependiendo de los niveles
-int cambioIntervalo = 100;
+final int cambioIntervalo = 100;
 int puntaje = 0;
 int nivel = 1;
 int eliminatedRows = 0;
@@ -161,7 +163,6 @@ final int radioPauseButton = 50;
 
 //Puntajes
 int[] highScores = new int [10];
-int posPuntaje;
 
 
 void setup() {
@@ -1269,7 +1270,7 @@ void gameOver() {
 void nivelActual() {
   if ((eliminatedRows == 5) && (nivel < 10)) {
     nivel += 1;
-    intervalo -= 70;
+    intervalo -= cambioIntervalo;
     eliminatedRows = 0;
   }
 }
