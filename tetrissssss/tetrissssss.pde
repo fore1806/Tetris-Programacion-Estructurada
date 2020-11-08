@@ -1,5 +1,4 @@
 //Tetris Programación Estructurada 
-//Andrés Felipe Forero Salas
 
 //Booleanos pantallas
 boolean screenInicial = true;
