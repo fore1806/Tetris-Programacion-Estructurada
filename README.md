@@ -3,6 +3,10 @@ Autor: Andrés Felipe Forero Salas
 
 GitHub nickname: [fore1806](https://github.com/fore1806) 
 
+Colaborador: Sebastian Bayona 
+
+GitHub nickname: [sbayonag](https://github.com/sbayonag)
+
 Programación Orientada a Objetos
 
 Universidad Nacional de Colombia Sede Bogotá
